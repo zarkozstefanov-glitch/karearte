@@ -293,7 +293,9 @@ export function Home({ lang }: { lang: Lang }) {
             </a>
           </SecHead>
         </div>
-        <Reels reels={reels} lang={lang} />
+        <Praised count={reels.length}>
+          <Reels reels={reels} lang={lang} />
+        </Praised>
       </section>
 
       {/* PRAISED — sticky horizontal */}

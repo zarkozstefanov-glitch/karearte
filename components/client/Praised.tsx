@@ -1,38 +1,43 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-/** Sticky section whose inner track scrolls horizontally as the page scrolls vertically. */
+/** Sticky section whose inner track moves sideways while the page scrolls down (all screen sizes).
+ *  Only becomes sticky when the content is wider than the screen. Shows a progress bar. */
 export function Praised({ children, count }: { children: React.ReactNode; count: number }) {
   const outer = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 900px) and (prefers-reduced-motion: no-preference)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     let raf = 0;
     const on = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const o = outer.current, t = track.current;
         if (!o || !t) return;
-        if (!mq.matches) {
-          t.style.transform = "";
+        const dist = t.scrollWidth - t.clientWidth;
+        if (reduce.matches || dist <= 4) {
+          o.classList.remove("is-active");
           o.style.height = "";
+          t.style.transform = "";
           return;
         }
-        const dist = t.scrollWidth - t.clientWidth;
-        o.style.height = `${window.innerHeight + dist}px`;
+        o.classList.add("is-active");
+        const stickyH = (o.firstElementChild as HTMLElement).offsetHeight;
+        o.style.height = `${stickyH + dist * 1.1}px`;
         const r = o.getBoundingClientRect();
-        const p = Math.min(1, Math.max(0, -r.top / (o.offsetHeight - window.innerHeight)));
+        const top = parseFloat(getComputedStyle(o.firstElementChild as HTMLElement).top) || 0;
+        const p = Math.min(1, Math.max(0, (top - r.top) / (o.offsetHeight - stickyH)));
         t.style.transform = `translate3d(${-p * dist}px,0,0)`;
+        if (bar.current) bar.current.style.transform = `scaleX(${p})`;
       });
     };
     on();
     window.addEventListener("scroll", on, { passive: true });
     window.addEventListener("resize", on);
-    mq.addEventListener("change", on);
     return () => {
       window.removeEventListener("scroll", on);
       window.removeEventListener("resize", on);
-      mq.removeEventListener("change", on);
     };
   }, []);
   return (
@@ -41,6 +46,9 @@ export function Praised({ children, count }: { children: React.ReactNode; count:
         <div ref={track} className="praised-track">
           {children}
         </div>
+        <span className="hs-progress" aria-hidden="true">
+          <span ref={bar} />
+        </span>
       </div>
     </div>
   );

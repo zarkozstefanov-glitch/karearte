@@ -1511,7 +1511,6 @@ html.menu-open {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     padding-bottom: 28px;
-    transform: none !important;
     scrollbar-width: none;
   }
   .praised-card,
@@ -4246,3 +4245,91 @@ html.pl-skip .orb-mark { animation: orbMark 0.6s ease-out 0.85s both; }
   .hl-body p { display: none; }
   .hl-part { top: 8px; left: 8px; font-size: 0.65rem; padding: 4px 8px; }
 }
+
+/* =================== v13: mobile UX pass =================== */
+/* scroll-driven horizontal sections (praised + reels), any width */
+.praised-outer { position: relative; }
+.praised-sticky { position: relative; min-height: 0; display: block; overflow: hidden; padding: 0; }
+.praised-outer.is-active .praised-sticky {
+  position: sticky;
+  top: calc(var(--header-h) + 8px);
+  min-height: 0;
+  height: calc(100svh - var(--header-h) - 16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.praised-track { overflow: visible !important; scroll-snap-type: none !important; padding-bottom: 0 !important; }
+.praised-sec { padding: clamp(48px, 7vw, 96px) 0; }
+.praised-sec .praised-sticky { padding: 0; }
+.hs-progress { display: none; position: relative; height: 4px; margin: 18px auto 0; width: min(220px, 50vw); border-radius: 4px; background: color-mix(in srgb, var(--ink) 15%, transparent); overflow: hidden; }
+.hs-progress span { position: absolute; inset: 0; background: var(--accent); transform-origin: 0 50%; transform: scaleX(0); border-radius: inherit; }
+.praised-outer.is-active .hs-progress { display: block; }
+.praised-track > .reels { display: flex; overflow: visible; padding: 8px 0 24px; gap: 14px; max-width: none; margin: 0; }
+.praised-track > .reels .reel { flex: 0 0 clamp(200px, 56vw, 260px); }
+@media (min-width: 1240px) { .praised-track > .reels .reel { flex: 1 1 0; } .reels-sec .praised-track { padding: 0 max(var(--gutter), calc((100vw - var(--maxw)) / 2 + var(--gutter))); } }
+.reels-sec .praised-track { padding: 0 var(--gutter); }
+
+@media (max-width: 640px) {
+  .sec { padding: 52px 0; }
+  .sec-head { margin-bottom: 22px; gap: 12px; }
+  .sec-head h2, .rv-top h2 { font-size: clamp(1.7rem, 7.6vw, 2.2rem); }
+  .kicker { font-size: 1.3rem; }
+  .lead { font-size: 1rem; }
+  /* praised cards on phones */
+  .praised-intro { flex: 0 0 72vw; }
+  .praised-intro h2 { font-size: 1.9rem; }
+  .praised-card { flex: 0 0 74vw; }
+  .praised-card img { aspect-ratio: 4 / 3.4; }
+  .praised-card blockquote { font-size: 1.05rem; }
+  .praised-outer.is-active .praised-sticky { height: calc(100svh - var(--header-h) - 12px); }
+  /* reviews: 3 rows, narrower cards, smaller text */
+  .rv-row:nth-child(4) { display: none; }
+  .rv-mq { gap: 10px; margin-bottom: 20px; }
+  .rv-track { gap: 10px; }
+  .rv-mcard { width: 232px; padding: 14px 14px 12px; border-radius: 16px; gap: 7px; }
+  .rv-mcard blockquote { font-size: 0.83rem; line-height: 1.45; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .rv-mstars svg { width: 12px; height: 12px; }
+  .rv-av { width: 26px; height: 26px; font-size: 0.75rem; }
+  .rv-mcard b { font-size: 0.82rem; }
+  .rv-score { padding: 10px 16px; border-radius: 14px; flex-direction: row; gap: 10px; }
+  .rv-score .stars svg { width: 15px; height: 15px; }
+  .rv-top { margin-bottom: 20px; }
+  /* events: compact horizontal cards */
+  .ev-grid { gap: 12px; }
+  .ev-card { flex-direction: row; min-height: 132px; }
+  .ev-media { flex: 0 0 112px; aspect-ratio: auto; }
+  .ev-date { left: 8px; top: 8px; width: 46px; padding: 6px 0 4px; border-radius: 10px; }
+  .ev-date b { font-size: 1.3rem; }
+  .ev-type { display: none; }
+  .ev-body { padding: 12px 14px; }
+  .ev-body h3 { font-size: 1.02rem; margin-bottom: 4px; }
+  .ev-sum { display: none; }
+  .ev-when { font-size: 0.75rem; margin-bottom: 4px; }
+  .ev-foot { font-size: 0.78rem; padding-top: 8px; }
+  /* other blocks */
+  .space-card { min-height: 300px; }
+  .space-card > div { padding: 20px; }
+  .space-card h3 { font-size: 1.3rem; }
+  .facts { grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0; }
+  .facts b { font-size: 1.8rem; }
+  .about-photos { max-width: 420px; margin: 0 auto; }
+  .daynight { aspect-ratio: 1 / 1; }
+  .gt-grid { grid-auto-rows: 120px; gap: 8px; }
+  .faq summary { font-size: 1.02rem; padding: 16px 40px 16px 0; }
+  .visit-steps li { font-size: 0.95rem; }
+  .btn-lg { --h: 50px; }
+}
+/* horizontal chip rails show there is more to the right */
+@media (max-width: 900px) {
+  .fp-tabs, .menu-cats, .chips, .days {
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .fp-tabs > *, .menu-cats > *, .chips > * { flex: none; }
+}
+.praised-track { align-items: center; }
+.praised-card, .praised-intro { align-self: center; height: auto; }
