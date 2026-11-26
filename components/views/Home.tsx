@@ -23,7 +23,7 @@ export const homeMeta = (lang: Lang) =>
   pageMeta(
     lang,
     "/",
-    T(lang, "КаРе-АртЕ — скрита бар-галерия в сърцето на София", "KaRe-Arte — a hidden bar-gallery in the heart of Sofia"),
+    T(lang, "КаРе-АртЕ — скрит арт кафе-бар в сърцето на София", "KaRe-Arte — a hidden art café-bar in the heart of Sofia"),
     T(
       lang,
       "Кафе и лимонади денем, авторски коктейли нощем. Куиз, джаз, рисуване с вино и картини навсякъде. Ул. „Петър Парчевич“ 36 · 4,8★ от 545 отзива в Google.",
@@ -82,13 +82,13 @@ export function Home({ lang }: { lang: Lang }) {
               </span>
             </a>
             <h1 data-reveal="up" style={{ "--d": "80ms" } as React.CSSProperties}>
-              <span className="h1-hand">{bg ? "скрита" : "a hidden"}</span>
-              <span className="h1-main">{bg ? "Бар-галерия" : "Bar-gallery"}</span>
+              <span className="h1-hand">{bg ? "скрит" : "a hidden"}</span>
+              <span className="h1-main">{bg ? "Арт кафе-бар" : "Art café-bar"}</span>
               <span className="h1-sub">{bg ? "в сърцето на София" : "in the heart of Sofia"}</span>
             </h1>
             <p className="hero-lead" data-reveal="up" style={{ "--d": "160ms" } as React.CSSProperties}>
-              <span className="only-day">{bg ? "Сутрин — кафе, лимонади и тишина за лаптопа. Две тераси отзад." : "Mornings — coffee, lemonades and quiet for your laptop. Two terraces out back."}</span>
-              <span className="only-night">{bg ? "Вечер — авторски коктейли, свещи, куиз и джаз под стенописа на Ван Гог." : "Evenings — signature cocktails, candles, quizzes and jazz under the Van Gogh mural."}</span>
+              <span className="only-day">{bg ? "Сутрин — кафе, лимонади и тишина за лаптопа, сред картини и книги." : "Mornings — coffee, lemonades and quiet for your laptop, among paintings and books."}</span>
+              <span className="only-night">{bg ? "Вечер — авторски коктейли, свещи и куиз под стенописа на Ван Гог." : "Evenings — signature cocktails, candles and quizzes under the Van Gogh mural."}</span>
             </p>
             <div className="hero-cta" data-reveal="up" style={{ "--d": "220ms" } as React.CSSProperties}>
               <Link href={to(lang, "reservations")} className="btn btn-accent btn-lg">

@@ -79,8 +79,8 @@ export const findSteps: { title: L; text: L; img: string }[] = [
 
 export const about = {
   lead: {
-    bg: "Бар-галерия, скрита в офис сграда на крачка от „Витоша“. Сутрин — кафе и тишина. Вечер — коктейли, свещи и хора, които не бързат.",
-    en: "A bar-gallery hidden in an office building a step from Vitosha Blvd. Mornings: coffee and quiet. Evenings: cocktails, candles and people in no hurry.",
+    bg: "Арт кафе-бар, скрит в офис сграда на крачка от „Витоша“. Сутрин — кафе и тишина. Вечер — коктейли, свещи и хора, които не бързат.",
+    en: "An art café-bar hidden in an office building a step from Vitosha Blvd. Mornings: coffee and quiet. Evenings: cocktails, candles and people in no hurry.",
   },
   paragraphs: [
     {

@@ -67,7 +67,7 @@ export function Footer({ lang }: { lang: Lang }) {
         </div>
       </div>
       <div className="container f-bottom">
-        <span>© {new Date().getFullYear()} KaRe-Arte · {bg ? "Бар-галерия, София" : "Bar-gallery, Sofia"}</span>
+        <span>© {new Date().getFullYear()} KaRe-Arte · {bg ? "Арт кафе-бар, София" : "Art café-bar, Sofia"}</span>
         <Link href={to(lang, "privacy")}>{bg ? "Поверителност и бисквитки" : "Privacy & cookies"}</Link>
       </div>
     </footer>

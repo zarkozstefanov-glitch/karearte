@@ -165,7 +165,7 @@ function EventCardLite({ e, lang }: { e: KAEvent; lang: Lang }) {
 }
 
 /* ---------------- GALLERY ---------------- */
-export const galleryMeta = (l: Lang) => pageMeta(l, "/gallery/", T(l, "Галерия", "Gallery") + suffix(l), T(l, "Снимки и видео от бар-галерията: интериор, градина, коктейли и събития.", "Photos and video from the bar-gallery: interior, garden, cocktails and events."));
+export const galleryMeta = (l: Lang) => pageMeta(l, "/gallery/", T(l, "Галерия", "Gallery") + suffix(l), T(l, "Снимки и видео от арт кафе-бара: интериор, градина, коктейли и събития.", "Photos and video from the art café-bar: interior, garden, cocktails and events."));
 export function GalleryPage({ lang }: { lang: Lang }) {
   const videos = [
     { src: "/video/reel-night", title: T(lang, "Една вечер в Каре Арте", "A night in Kare Arte"), mood: "night" },

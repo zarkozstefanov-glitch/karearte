@@ -21,13 +21,13 @@ const PHOTOS = {
 
 const T = {
   bg: {
-    kick: "скрита", title: "Бар-галерия", sub: "в сърцето на София",
+    kick: "скрит", title: "Арт кафе-бар", sub: "в сърцето на София",
     line: ["Кафе денем", "коктейли нощем", "изкуство по стените"],
     rating: "4,8", reviews: "545 отзива в Google", addr: "ул. „Петър Парчевич“ 36, София",
     caps: ["спомени на свещ", "коктейл на сляпо", "оранжевата стая"],
   },
   en: {
-    kick: "a hidden", title: "Bar-gallery", sub: "in the heart of Sofia",
+    kick: "a hidden", title: "Art café-bar", sub: "in the heart of Sofia",
     line: ["Coffee by day", "cocktails by night", "art on every wall"],
     rating: "4.8", reviews: "545 Google reviews", addr: "36 Petar Parchevich St, Sofia",
     caps: ["by candlelight", "the blind cocktail", "the orange room"],
@@ -54,7 +54,7 @@ body{width:1200px;height:630px;overflow:hidden;background:#0e1430;font-family:Ma
 .mark span{font-family:'Permanent Marker';font-size:22px;transform:rotate(-3deg);margin-top:1px}
 
 .kick{margin-top:34px;font-family:Caveat;font-size:50px;color:#ffd36e;line-height:1;transform:rotate(-4deg);transform-origin:left bottom}
-h1{margin-top:2px;white-space:nowrap;font-family:"Playfair Display";font-weight:800;font-size:92px;line-height:1;letter-spacing:-1.5px;display:inline-block;position:relative;z-index:0}
+h1{margin-top:2px;white-space:nowrap;font-family:"Playfair Display";font-weight:800;font-size:86px;line-height:1;letter-spacing:-1.5px;display:inline-block;position:relative;z-index:0}
 h1::after{content:"";position:absolute;z-index:-1;left:-10px;right:-14px;bottom:10px;height:30px;
   background:linear-gradient(90deg,#e5482b,#f08a24 55%,#ecb330);opacity:.92;transform:skew(-8deg) rotate(-1deg);border-radius:3px}
 h2{margin-top:4px;font-family:'Playfair Display';font-style:italic;font-weight:500;font-size:44px;line-height:1.1;color:#f4eee2}
