@@ -1,4 +1,4 @@
-/** Preloader (~3.3 s, once per session): a real paintbrush paints the canvas — the paint appears
+/** Preloader (~6 s, once per session): a real paintbrush paints the canvas — the paint appears
  *  exactly under the bristles. Blue wash → orange swoosh → yellow swirl → the wine glass drawn
  *  bottom-up (base, stem, bowl) → the brush signs "KaRe-Arte" → draws a wine bottle → the bottle
  *  tilts and pours red wine into the glass → the name pops and the canvas fades away. */
@@ -16,34 +16,43 @@ function paint(sel,start,dur,color,ease){
   var path=q(sel);ease=ease||'cubic-bezier(.4,0,.3,1)';
   var L=path.getTotalLength();path.style.strokeDasharray=L+' '+L;path.style.strokeDashoffset=L;
   path.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:dur,delay:start,fill:F,easing:ease});
-  brush.animate(pts(path,40),{duration:dur,delay:start,fill:F,easing:ease});
+  brush.animate(pts(path,80),{duration:dur,delay:start,fill:F,easing:ease});
   setTimeout(function(){tip.style.fill=color},start);
 }
 function write(guide,clip,w,start,dur,color){
-  brush.animate(pts(q(guide),36),{duration:dur,delay:start,fill:F,easing:'linear'});
+  brush.animate(pts(q(guide),72),{duration:dur,delay:start,fill:F,easing:'linear'});
   q(clip).animate([{width:'0px'},{width:w+'px'}],{duration:dur,delay:start,fill:F,easing:'linear'});
   setTimeout(function(){tip.style.fill=color},start);
 }
-function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{transform:'translate('+b+')'}],{duration:dur,delay:start,fill:F,easing:'ease-in-out'})}
-brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:160,fill:F,easing:'ease-out'});
-paint('#pl-blue',160,180,'#26408b');      hop('326px,160px','58px,222px',340,30);
-paint('#pl-orange',370,150,'#e8742a');    hop('306px,222px','78px,78px',520,25);
-paint('#pl-swirl',545,120,'#f0a92a');     hop('92px,82px','150px,232px',665,35);
-paint('#pl-base',700,90,'#1e1b2e');       hop('210px,232px','180px,229px',790,15);
-paint('#pl-stem',805,90,'#1e1b2e');
-paint('#pl-bowl-line',905,290,'#1e1b2e'); hop('180px,174px','132px,262px',1195,40);
-paint('#pl-box',1235,270,'#1e1b2e');      hop('132px,262px','140px,286px',1505,25);
-write('#pl-g1','#pl-c1',96,1530,200,'#1e1b2e'); hop('220px,286px','116px,334px',1730,25);
-write('#pl-g2','#pl-c2',140,1755,290,'#1e1b2e'); hop('246px,334px','268px,76px',2045,45);
-paint('#pl-bottle-line',2090,260,'#1e1b2e');
-q('#pl-bottle-fill').animate([{opacity:0},{opacity:1}],{duration:120,delay:2330,fill:F});
-brush.animate([{opacity:1,transform:'translate(268px,76px)'},{opacity:0,transform:'translate(450px,30px) rotate(30deg)'}],{duration:160,delay:2350,fill:F,easing:'ease-in'});
-q('#pl-bottle').animate([{transform:'none'},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.35},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.75},{transform:'none'}],{duration:720,delay:2380,fill:F,easing:'cubic-bezier(.45,0,.35,1)'});
+function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{transform:'translate('+b+')'}],{duration:dur,delay:start,fill:F,easing:'cubic-bezier(.45,0,.55,1)'})}
+/* one timeline: every step starts where the previous ended; S scales the whole thing */
+var S=.52,t=0,ms=function(x){return Math.round(x*S)};
+function P(sel,d,c){d=ms(d);paint(sel,t,d,c);t+=d}
+function J(a,b,d){d=ms(d);hop(a,b,t,d);t+=d}
+function W(g,c,w,d,col){d=ms(d);write(g,c,w,t,d,col);t+=d}
+brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:ms(600),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});t=ms(600);
+P('#pl-blue',760,'#26408b');      J('326px,160px','58px,222px',260);
+P('#pl-orange',560,'#e8742a');    J('306px,222px','78px,78px',300);
+P('#pl-swirl',460,'#f0a92a');     J('92px,82px','150px,232px',300);
+P('#pl-base',300,'#1e1b2e');      J('210px,232px','180px,229px',130);
+P('#pl-stem',280,'#1e1b2e');
+P('#pl-bowl-line',800,'#1e1b2e'); J('180px,174px','132px,262px',300);
+P('#pl-box',700,'#1e1b2e');       J('132px,262px','140px,286px',180);
+W('#pl-g1','#pl-c1',96,540,'#1e1b2e'); J('220px,286px','116px,334px',220);
+W('#pl-g2','#pl-c2',140,760,'#1e1b2e'); J('246px,334px','268px,76px',340);
+P('#pl-bottle-line',700,'#1e1b2e');
+q('#pl-bottle-fill').animate([{opacity:0},{opacity:1}],{duration:ms(380),delay:t,fill:F,easing:'ease-out'});
+brush.animate([{opacity:1,transform:'translate(268px,76px)'},{opacity:0,transform:'translate(450px,30px) rotate(30deg)'}],{duration:ms(560),delay:t+ms(40),fill:F,easing:'cubic-bezier(.5,0,.75,0)'});
+var b0=t+ms(160),bd=ms(1500);
+q('#pl-bottle').animate([{transform:'none'},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.35},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.75},{transform:'none'}],{duration:bd,delay:b0,fill:F,easing:'cubic-bezier(.45,0,.35,1)'});
 var st=q('#pl-stream'),SL=st.getTotalLength();st.style.strokeDasharray=SL+' '+SL;st.style.strokeDashoffset=SL;
-st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:380,delay:2610,fill:F,easing:'linear'});
-q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:350,delay:2640,fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
-q('#pl-logo').animate([{transform:'scale(1)'},{transform:'scale(1.14)'},{transform:'scale(1.05)'}],{duration:260,delay:3110,fill:F,easing:'ease-out'});
-setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},650)},3380);
+var s0=b0+Math.round(bd*.3);
+st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:ms(820),delay:s0,fill:F,easing:'linear'});
+q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:ms(800),delay:s0+ms(60),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
+t=b0+bd+ms(80);
+q('#pl-logo').animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1.05)'}],{duration:ms(620),delay:t,fill:F,easing:'cubic-bezier(.34,1.56,.64,1)'});
+t+=ms(620)+ms(320);
+setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},950)},t);
 })();`;
 
 const GLASS_BOWL = "M148 78C146 134 161 170 180 174C199 170 214 134 212 78Z";

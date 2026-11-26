@@ -3954,7 +3954,7 @@ body::before {
   background: radial-gradient(circle at 50% 45%, #fbf3e0 0%, #f3e6c8 60%, #e9d6ab 100%);
   clip-path: circle(150% at 50% 50%);
   transition: clip-path 0.8s cubic-bezier(0.7, 0, 0.3, 1);
-  animation: plFallback 0.01s linear 5s forwards;
+  animation: plFallback 0.01s linear 9s forwards;
 }
 #preloader::before {
   content: "";
@@ -4069,7 +4069,7 @@ html.pl-moving #preloader::before, html.pl-moving .pl-svg { opacity: 0; transiti
 }
 
 /* ---------- v7 preloader: bottle pour + name flies into the header ---------- */
-#preloader { background: none !important; clip-path: none !important; transition: none; animation: plFallback 0.01s linear 4.6s forwards; }
+#preloader { background: none !important; clip-path: none !important; transition: none; animation: plFallback 0.01s linear 9s forwards; }
 #preloader::before { content: none; }
 .pl-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #fbf3e0 0%, #f3e6c8 60%, #e9d6ab 100%); }
 .pl-bg::before {
@@ -4101,7 +4101,7 @@ html.pl-done #preloader { pointer-events: none; }
 .pl-tag { position: relative; margin-top: 6px; }
 /* header logo "catches" the name */
 /* v8 preloader exit: soft fade */
-html.pl-done #preloader { opacity: 0; transition: opacity 0.6s ease; }
+html.pl-done #preloader { opacity: 0; transition: opacity 0.9s cubic-bezier(.4,0,.2,1); }
 #preloader .pl-stroke, #preloader .pl-line { stroke-dasharray: 0 9999; }
 
 /* ---------- v8: sun / moon emblem in the header (hangs below the bar) ---------- */
@@ -4151,7 +4151,7 @@ html.pl-done #preloader { opacity: 0; transition: opacity 0.6s ease; }
 }
 
 /* ---------- v9 preloader: bigger stage, textured paint, fast ---------- */
-#preloader { animation: plFallback 0.01s linear 5s forwards; }
+#preloader { animation: plFallback 0.01s linear 9s forwards; }
 .pl-stage { transform: scale(var(--s, 1)); transform-origin: 50% 50%; }
 @media (max-width: 420px) { .pl-stage { transform: scale(var(--s, 0.86)); } }
 #preloader .pl-paint { fill: none; stroke-linecap: round; stroke-linejoin: round; filter: url(#pl-bristle); stroke-dasharray: 0 9999; }
@@ -4161,7 +4161,7 @@ html.pl-done #preloader { opacity: 0; transition: opacity 0.6s ease; }
 #pl-brush { filter: drop-shadow(5px 9px 7px rgba(0, 0, 0, 0.4)); }
 
 /* ---------- v10: preloader logo, hero reveal after preloader, bigger sun/moon ---------- */
-#preloader { animation: plFallback 0.01s linear 4.6s forwards; }
+#preloader { animation: plFallback 0.01s linear 9s forwards; }
 .pl-kare { font-family: var(--f-display), Georgia, serif; font-style: italic; font-weight: 600; font-size: 30px; fill: #1e1b2e; }
 .pl-arte { font-family: var(--f-brush), "Permanent Marker", cursive; font-size: 50px; letter-spacing: 2px; fill: #1e1b2e; }
 #pl-logo { transform-box: view-box; }
