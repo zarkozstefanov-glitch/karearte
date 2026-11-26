@@ -5,7 +5,7 @@ import type { L } from "@/lib/i18n";
 export const site = {
   name: "KaRe-Arte",
   nameBg: "КаРе-АртЕ",
-  url: "https://karearte.bg", // TODO: real domain once bought
+  url: "https://karearte.vercel.app", // TODO: switch to the real domain once bought
   phone: "+359888784278",
   phoneDisplay: "0888 784 278",
   email: "", // TODO: confirm with Kalina

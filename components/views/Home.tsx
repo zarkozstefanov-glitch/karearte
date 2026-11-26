@@ -23,11 +23,11 @@ export const homeMeta = (lang: Lang) =>
   pageMeta(
     lang,
     "/",
-    T(lang, "КаРе-АртЕ · Бар-галерия, кафе и коктейли в центъра на София", "KaRe-Arte · Bar-gallery, coffee & cocktails in central Sofia"),
+    T(lang, "КаРе-АртЕ — скрита бар-галерия в сърцето на София", "KaRe-Arte — a hidden bar-gallery in the heart of Sofia"),
     T(
       lang,
-      "Скрита бар-галерия на ул. „Петър Парчевич“ 36: кафе и лимонади през деня, авторски коктейли вечер, куиз, рисуване с вино, джаз и частни партита. 4,8 в Google.",
-      "A hidden bar-gallery at 36 Petar Parchevich St: coffee and lemonades by day, signature cocktails by night, quizzes, paint & wine, jazz and private parties. 4.8 on Google.",
+      "Кафе и лимонади денем, авторски коктейли нощем. Куиз, джаз, рисуване с вино и картини навсякъде. Ул. „Петър Парчевич“ 36 · 4,8★ от 545 отзива в Google.",
+      "Coffee and lemonades by day, signature cocktails by night. Quizzes, jazz, paint & wine and art on every wall. 36 Petar Parchevich St · 4.8★ from 545 Google reviews.",
     ),
   );
 
