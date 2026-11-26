@@ -4412,3 +4412,4 @@ html.pl-done .logo-orb, html.pl-skip .logo-orb { animation: orbIn 0.7s var(--eas
 @media (max-width: 640px) {
   .hero-rating { align-self: center !important; margin-left: auto; margin-right: auto; }
 }
+.pl-canvas { fill: #fdfcf8; stroke: #cfc6b4; stroke-width: 1.5; filter: drop-shadow(0 16px 20px rgba(0, 0, 0, 0.45)); }

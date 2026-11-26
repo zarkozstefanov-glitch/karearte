@@ -58,7 +58,7 @@ export function Preloader() {
       <div id="preloader" aria-hidden="true">
         <div className="pl-bg" />
         <div className="pl-stage">
-          <svg viewBox="0 0 360 360" width="360" height="360" className="pl-svg">
+          <svg viewBox="-90 -12 500 470" width="360" height="338" className="pl-svg">
             <defs>
               <filter id="pl-rough" x="-20%" y="-30%" width="140%" height="160%">
                 <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="3" seed="3" />
@@ -97,11 +97,39 @@ export function Preloader() {
               </linearGradient>
             </defs>
 
-            <g className="pl-easel">
-              <path d="M70 360L110 30M290 360L250 30M180 20V380" stroke="#8a5a2e" strokeWidth="9" strokeLinecap="round" />
-              <rect x="34" y="360" width="292" height="12" rx="4" fill="#6b4422" />
+            <g className="pl-studio">
+              {/* back leg (behind the canvas) */}
+              <path d="M180 -6L180 452" stroke="#6b4422" strokeWidth="9" strokeLinecap="round" />
+              {/* front legs */}
+              <path d="M112 300L58 452M248 300L302 452" stroke="#8a5a2e" strokeWidth="11" strokeLinecap="round" />
+              <path d="M84 380H276" stroke="#7a4d26" strokeWidth="6" strokeLinecap="round" />
+              {/* top clamp */}
+              <rect x="160" y="-2" width="40" height="14" rx="3" fill="#8a5a2e" />
+              {/* canvas: thickness, face, stretched edge */}
+              <rect x="49" y="12" width="270" height="336" rx="2" fill="#d8d0bf" />
+              <rect x="45" y="8" width="270" height="336" rx="2" className="pl-canvas" />
+              <rect x="51" y="14" width="258" height="324" fill="none" stroke="#e6dfd0" strokeWidth="2" />
+              {/* ledge */}
+              <rect x="30" y="346" width="300" height="14" rx="4" fill="#9a6532" />
+              <rect x="30" y="346" width="300" height="4" rx="2" fill="#c08a4e" />
+              {/* stool with paints and brushes */}
+              <g transform="translate(-36 0)">
+                <path d="M-26 372L-40 452M26 372L40 452M-4 372L-4 452" stroke="#6b4422" strokeWidth="7" strokeLinecap="round" />
+                <ellipse cx="0" cy="370" rx="46" ry="12" fill="#a8763e" />
+                <ellipse cx="0" cy="366" rx="46" ry="12" fill="#c8964f" />
+                <ellipse cx="-14" cy="356" rx="22" ry="8" fill="#efe6d2" stroke="#c9bfa9" strokeWidth="1" />
+                <circle cx="-24" cy="355" r="3.4" fill="#26408b" />
+                <circle cx="-14" cy="352" r="3" fill="#e8742a" />
+                <circle cx="-5" cy="356" r="3" fill="#f0a92a" />
+                <circle cx="-16" cy="360" r="2.6" fill="#9b1c31" />
+                <rect x="14" y="330" width="16" height="30" rx="3" fill="#bfe1e6" opacity=".85" />
+                <path d="M18 330L12 296M22 330L24 290M26 330L34 300" stroke="#8a5a2e" strokeWidth="2.6" strokeLinecap="round" />
+                <path d="M12 296l-2-6M24 290l0-6M34 300l2-6" stroke="#26408b" strokeWidth="3.4" strokeLinecap="round" />
+                <rect x="32" y="348" width="11" height="12" rx="2" fill="#e8742a" />
+                <rect x="-40" y="346" width="10" height="13" rx="2" fill="#26408b" />
+              </g>
             </g>
-            <rect x="14" y="26" width="332" height="338" rx="4" className="pl-canvas" />
+            <g transform="translate(36 21) scale(.78)">
             <path id="pl-blue" d="M46 150C92 108 140 196 196 146S300 118 326 160" className="pl-paint" stroke="#26408b" strokeWidth="50" />
             <path id="pl-orange" d="M58 222C118 252 206 186 306 222" className="pl-paint" stroke="#e8742a" strokeWidth="34" />
             <path id="pl-swirl" d="M78 78c12-18 40-12 38 8c-2 16-26 16-26 2c0-8 10-10 14-4" className="pl-paint pl-swirl" stroke="#f0a92a" strokeWidth="9" />
@@ -157,6 +185,7 @@ export function Preloader() {
                 <path id="pl-tip" d="M-5.6 -20C-5 -11 -2.6 -4.5 0 0C2.6 -4.5 5 -11 5.6 -20C2 -17 -2 -17 -5.6 -20Z" fill="#26408b" />
                 <ellipse cx="-1.6" cy="-11" rx="1" ry="3.2" fill="#fff" opacity=".35" />
               </g>
+            </g>
             </g>
           </svg>
         </div>
