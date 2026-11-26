@@ -12,12 +12,21 @@ import { Instagram, Phone } from "../Icons";
 export function Header({ lang }: { lang: Lang }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [away, setAway] = useState(false);
   const path = usePathname() || "/";
 
   useEffect(() => {
+    // phones: the header bubble hides while scrolling down and comes back as soon as you scroll up
+    let last = window.scrollY;
     const on = () => {
-      setScrolled(window.scrollY > 24);
+      const y = window.scrollY;
+      setScrolled(y > 24);
       syncBarColor();
+      const dy = y - last;
+      if (y < 120) setAway(false);
+      else if (dy > 6) setAway(true);
+      else if (dy < -6) setAway(false);
+      if (Math.abs(dy) > 6 || y < 120) last = y;
     };
     on();
     window.addEventListener("scroll", on, { passive: true });
@@ -36,7 +45,7 @@ export function Header({ lang }: { lang: Lang }) {
   const isActive = (p: string) => bare.startsWith(p) && p !== "/";
 
   return (
-    <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""}`}>
+    <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""} ${away && !open ? "is-away" : ""}`}>
       <div className="container header-row">
         <Link href={to(lang, "home")} className="header-logo" aria-label="KaRe-Arte">
           <LogoOrb />
