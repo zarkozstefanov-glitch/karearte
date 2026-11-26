@@ -88,7 +88,7 @@ export function Home({ lang }: { lang: Lang }) {
             </h1>
             <p className="hero-lead" data-reveal="up" style={{ "--d": "160ms" } as React.CSSProperties}>
               <span className="only-day">{bg ? "Сутрин — кафе, лимонади и тишина за лаптопа, сред картини и книги." : "Mornings — coffee, lemonades and quiet for your laptop, among paintings and books."}</span>
-              <span className="only-night">{bg ? "Вечер — авторски коктейли, свещи и куиз под стенописа на Ван Гог." : "Evenings — signature cocktails, candles and quizzes under the Van Gogh mural."}</span>
+              <span className="only-night">{bg ? "Вечер — авторски коктейли, свещи и куиз в приятна обстановка." : "Evenings — signature cocktails, candles and quizzes in a cosy setting."}</span>
             </p>
             <div className="hero-cta" data-reveal="up" style={{ "--d": "220ms" } as React.CSSProperties}>
               <Link href={to(lang, "reservations")} className="btn btn-accent btn-lg">
