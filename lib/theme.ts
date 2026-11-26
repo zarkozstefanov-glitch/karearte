@@ -2,7 +2,7 @@ export type Theme = "day" | "night";
 export const THEME_KEY = "ka-theme";
 
 /** Runs inline in <head> before paint: explicit choice, else day 07–18 Sofia time, else night. */
-export const themeInitScript = `(function(){try{var t=sessionStorage.getItem('${THEME_KEY}');if(t!=='day'&&t!=='night'){t='night';/* TODO restore Sofia time: var h=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hour12:false,timeZone:'Europe/Sofia'}).format(new Date());t=(h>=7&&h<18)?'day':'night'; */}document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t==='day'?'#F6EFE2':'#0E1430';}catch(e){document.documentElement.dataset.theme='night';}})();`;
+export const themeInitScript = `(function(){try{var t=sessionStorage.getItem('${THEME_KEY}');if(t!=='day'&&t!=='night'){t='night';/* TODO restore Sofia time: var h=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hour12:false,timeZone:'Europe/Sofia'}).format(new Date());t=(h>=7&&h<18)?'day':'night'; */}document.documentElement.dataset.theme=t;var m=document.querySelector('meta[name=theme-color]');if(m)m.content=t==='day'?'#FFF3D1':'#0E1430';}catch(e){document.documentElement.dataset.theme='night';}})();`;
 
 export function setTheme(t: Theme) {
   document.documentElement.dataset.theme = t;
@@ -10,7 +10,7 @@ export function setTheme(t: Theme) {
     sessionStorage.setItem(THEME_KEY, t);
   } catch {}
   const m = document.querySelector<HTMLMetaElement>("meta[name=theme-color]");
-  if (m) m.content = t === "day" ? "#F6EFE2" : "#0E1430";
+  if (m) m.content = t === "day" ? "#FFF3D1" : "#0E1430";
   window.dispatchEvent(new CustomEvent("ka-theme", { detail: t }));
 }
 

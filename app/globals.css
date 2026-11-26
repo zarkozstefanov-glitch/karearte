@@ -4512,3 +4512,22 @@ html.theme-snap, html.theme-snap *, html.theme-snap *::before, html.theme-snap *
 /* rows: no sideways entrance (it fought the scroll motion) — just a short fade */
 .rv-mq .rv-row, .rv-mq .rv-row.is-rev, .rv-mq.is-in .rv-row { translate: none !important; }
 .rv-mq .rv-row { transition: opacity 0.5s ease !important; transition-delay: 0s !important; }
+
+/* ---------- v20: phones — a light glass header that also tints the area above it (iPhone status bar) ---------- */
+html { background-color: var(--bg); }
+@media (max-width: 900px) {
+  .site-header,
+  .site-header.is-scrolled,
+  .site-header.is-open,
+  .site-header:not(.is-scrolled):not(.is-open),
+  [data-theme="day"] .site-header:not(.is-scrolled):not(.is-open) {
+    background: color-mix(in srgb, var(--bg) 72%, transparent);
+    background-image: none;
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    backdrop-filter: blur(16px) saturate(1.4);
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 8%, transparent);
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--header-h) + env(safe-area-inset-top));
+  }
+  .site-header.is-open { background: var(--bg); }
+}
