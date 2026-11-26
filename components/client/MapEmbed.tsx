@@ -6,7 +6,7 @@ import { Pin } from "../Icons";
 
 /** Google Map loads only after a click (no third-party cookies before consent). */
 export function MapEmbed({ lang }: { lang: Lang }) {
-  const [on, setOn] = useState(false);
+  const [on, setOn] = useState(true);
   return (
     <div className="map-box">
       {on ? (

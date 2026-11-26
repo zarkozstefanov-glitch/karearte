@@ -466,7 +466,7 @@ export function PrivacyPage({ lang }: { lang: Lang }) {
           <h2>{bg ? "Колко дълго" : "How long"}</h2>
           <p>{bg ? "Пазим заявките до 12 месеца, освен ако не си се съгласил/а да получаваш новини за събития. Можеш да поискаш изтриване по всяко време на телефона ни." : "We keep requests for up to 12 months unless you've agreed to receive event news. You can ask for deletion any time by calling us."}</p>
           <h2>{bg ? "Бисквитки" : "Cookies"}</h2>
-          <p>{bg ? "Сайтът не ползва рекламни бисквитки. Запомняме само избора ти ден/нощ в браузъра. Картата на Google се зарежда едва след като я натиснеш." : "The site uses no advertising cookies. We only remember your day/night choice in your browser. The Google map loads only after you click it."}</p>
+          <p>{bg ? "Сайтът не ползва рекламни бисквитки. Запомняме само избора ти ден/нощ в браузъра. Картата на Google Maps се зарежда от Google и може да ползва техни бисквитки." : "The site uses no advertising cookies. We only remember your day/night choice in your browser. The Google Maps embed is loaded from Google and may use their cookies."}</p>
           <h2>{bg ? "Контакт" : "Contact"}</h2>
           <p>
             KaRe-Arte · {site.address[lang]} · <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>

@@ -45,7 +45,7 @@ var st=q('#pl-stream'),SL=st.getTotalLength();st.style.strokeDasharray=SL+' '+SL
 st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:470,delay:3830,fill:F,easing:'linear'});
 q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:430,delay:3870,fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
 q('#pl-logo').animate([{transform:'scale(1)'},{transform:'scale(1.14)'},{transform:'scale(1.05)'}],{duration:300,delay:4440,fill:F,easing:'ease-out'});
-q('.pl-tag').animate([{opacity:0},{opacity:1}],{duration:250,delay:3100,fill:F});
+
 setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},650)},4750);
 })();`;
 
@@ -97,6 +97,11 @@ export function Preloader() {
               </linearGradient>
             </defs>
 
+            <g className="pl-easel">
+              <path d="M70 360L110 30M290 360L250 30M180 20V380" stroke="#8a5a2e" strokeWidth="9" strokeLinecap="round" />
+              <rect x="34" y="360" width="292" height="12" rx="4" fill="#6b4422" />
+            </g>
+            <rect x="14" y="26" width="332" height="338" rx="4" className="pl-canvas" />
             <path id="pl-blue" d="M46 150C92 108 140 196 196 146S300 118 326 160" className="pl-paint" stroke="#26408b" strokeWidth="50" />
             <path id="pl-orange" d="M58 222C118 252 206 186 306 222" className="pl-paint" stroke="#e8742a" strokeWidth="34" />
             <path id="pl-swirl" d="M78 78c12-18 40-12 38 8c-2 16-26 16-26 2c0-8 10-10 14-4" className="pl-paint pl-swirl" stroke="#f0a92a" strokeWidth="9" />
@@ -154,8 +159,6 @@ export function Preloader() {
               </g>
             </g>
           </svg>
-          
-          <p className="pl-tag">бар-галерия · bar-gallery</p>
         </div>
       </div>
       <script dangerouslySetInnerHTML={{ __html: run }} />

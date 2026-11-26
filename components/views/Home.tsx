@@ -13,7 +13,7 @@ import { SecHead } from "../Chrome";
 import { EventCard } from "../EventCard";
 import { HeroVideo } from "../client/HeroVideo";
 import { OpenStatus } from "../client/OpenStatus";
-import { DayNight } from "../client/DayNight";
+import { ThemeShowcase } from "../client/ThemeShowcase";
 import { ReviewGrid } from "../client/ReviewGrid";
 import { Praised } from "../client/Praised";
 import { Reels } from "../client/Reels";
@@ -216,7 +216,7 @@ export function Home({ lang }: { lang: Lang }) {
       <section className="sec dn-sec">
         <div className="container dn-grid">
           <div data-reveal="up">
-            <DayNight lang={lang} day="hall-bar-wide" night="night-mural-guests" />
+            <ThemeShowcase lang={lang} />
           </div>
           <div className="dn-copy" data-reveal="up" style={{ "--d": "100ms" } as React.CSSProperties}>
             <p className="kicker">{bg ? "Две места в едно" : "Two places in one"}</p>
@@ -231,7 +231,7 @@ export function Home({ lang }: { lang: Lang }) {
                 <p>{bg ? "Около десет авторски коктейла без списък със съставки — барманът ще те попита какво обичаш. Свещи, музика, събития." : "About ten signature cocktails with no ingredient list — the bartender asks what you like. Candles, music, events."}</p>
               </div>
             </div>
-            <p className="dn-hint">{bg ? "Плъзни линията. Или натисни ден/нощ горе — целият сайт се сменя." : "Drag the line. Or tap day/night up top — the whole site changes."}</p>
+            <p className="dn-hint">{bg ? "Натисни бутона върху снимката — целият сайт сменя деня с нощта." : "Tap the button on the photo — the whole site switches day and night."}</p>
           </div>
         </div>
       </section>
@@ -250,11 +250,12 @@ export function Home({ lang }: { lang: Lang }) {
                 <div className="hl-img">
                   <Img id={h.img!} lang={lang} sizes="(min-width: 1000px) 25vw, (min-width: 600px) 50vw, 100vw" />
                   <span className={`hl-part hl-${h.part}`}>{h.part === "day" ? (bg ? "Ден" : "Day") : bg ? "Нощ" : "Night"}</span>
+                  <span className="hl-price">{eur(h.price)}</span>
                 </div>
                 <div className="hl-body">
                   <h3>{h.name[lang]}</h3>
                   {h.desc && <p>{h.desc[lang]}</p>}
-                  <b>{eur(h.price)}</b>
+
                 </div>
               </li>
             ))}
@@ -300,6 +301,10 @@ export function Home({ lang }: { lang: Lang }) {
 
       {/* PRAISED — sticky horizontal */}
       <section className="sec praised-sec tone-mustard" aria-label={bg ? "За какво пишат гостите" : "What guests write about"}>
+        <div className="container praised-mhead">
+          <p className="kicker">{bg ? "От отзивите" : "From the reviews"}</p>
+          <h2>{bg ? "За какво пишат гостите." : "What guests write about."}</h2>
+        </div>
         <Praised count={praised.length}>
           <div className="praised-intro">
             <p className="kicker">{bg ? "От отзивите" : "From the reviews"}</p>

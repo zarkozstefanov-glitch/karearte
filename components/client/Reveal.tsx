@@ -7,6 +7,16 @@ export function Reveal() {
   const path = usePathname();
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // everything gets an entrance: tag common blocks that weren't tagged by hand, staggered per parent
+    const AUTO = ".sec-head, .rv-top, .hl-card, .ev-grid > li, .gt, .space-card, .facts li, .faq details, .visit-grid > *, .post-card, .contact-card, .steps li, .past-grid li, .fp, .menu-sec, .m-item, .rv-mq, .ts, .dn-copy, .about-copy, .about-photos, .footer-grid > *, .praised-mhead, .page-hero .lead";
+    document.querySelectorAll<HTMLElement>(AUTO).forEach((el) => {
+      if (el.hasAttribute("data-reveal") || el.closest(".hero")) return;
+      el.setAttribute("data-reveal", el.matches(".hl-card") ? "pop" : "up");
+      if (!el.style.getPropertyValue("--d") && el.parentElement) {
+        const i = Array.prototype.indexOf.call(el.parentElement.children, el);
+        el.style.setProperty("--d", `${Math.min(i, 8) * 80}ms`);
+      }
+    });
     const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)"));
     if (reduce || !("IntersectionObserver" in window)) {
       els.forEach((e) => e.classList.add("is-in"));
