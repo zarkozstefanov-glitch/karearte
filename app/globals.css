@@ -4396,3 +4396,19 @@ html.pl-done .logo-orb, html.pl-skip .logo-orb { animation: orbIn 0.7s var(--eas
 @keyframes orbGlowMoon { to { filter: drop-shadow(0 0 9px rgba(170, 200, 255, 0.7)); } }
 .hl-card[data-reveal].is-in { transform: rotate(var(--rot, -2deg)); }
 .hl-card[data-reveal].is-in:hover { transform: rotate(0) translateY(-8px) scale(1.03); }
+
+/* =================== v15 =================== */
+.ts[data-mode="day"] .ts-night,
+.ts[data-mode="night"] .ts-day { opacity: 0; transform: scale(1.08); }
+.ts[data-mode="day"] .ts-day,
+.ts[data-mode="night"] .ts-night { opacity: 1; transform: none; }
+.ts[data-mode="night"] .ts-orb { background: radial-gradient(circle at 35% 30%, #fffdf0, #ffe27a 60%, #f6b52e); color: #c8361c; box-shadow: 0 0 22px rgba(255, 210, 90, 0.85); }
+/* smooth theme switch: a soft cross-fade of the whole page */
+.vt-theme::view-transition-new(root) { animation: vtIn 0.65s cubic-bezier(0.4, 0, 0.2, 1) both; clip-path: none; }
+.vt-theme::view-transition-old(root) { animation: vtOut 0.65s cubic-bezier(0.4, 0, 0.2, 1) both; }
+@keyframes vtIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vtOut { from { opacity: 1; } to { opacity: 0; } }
+/* centred rating badge on phones */
+@media (max-width: 640px) {
+  .hero-rating { align-self: center !important; margin-left: auto; margin-right: auto; }
+}

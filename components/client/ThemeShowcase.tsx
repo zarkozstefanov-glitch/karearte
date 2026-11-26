@@ -20,7 +20,7 @@ export function ThemeShowcase({ lang }: { lang: Lang }) {
     } else setTheme(next);
   };
   return (
-    <div className={`ts ${night ? "is-night" : "is-day"}`}>
+    <div className="ts" data-mode={night ? "night" : "day"}>
       <Img id="hall-bar-wide" lang={lang} sizes="(min-width: 1000px) 60vw, 100vw" className="ts-img ts-day" />
       <Img id="night-mural-guests" lang={lang} sizes="(min-width: 1000px) 60vw, 100vw" className="ts-img ts-night" />
       <div className="ts-label">
