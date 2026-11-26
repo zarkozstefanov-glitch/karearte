@@ -4433,3 +4433,14 @@ html.pl-done .logo-orb, html.pl-skip .logo-orb { animation: orbIn 0.7s var(--eas
   .about-sec .facts span { font-size: 0.68rem; }
 }
 @media (max-width: 640px) { .about-photos { width: 100%; max-width: 300px; height: 34svh; max-height: none; aspect-ratio: auto; justify-self: center; } }
+
+/* ---------- v17: review rows enter one by one ---------- */
+.rv-mq[data-reveal] { opacity: 1 !important; transform: none !important; }
+.rv-mq .rv-row { opacity: 0; translate: -90px 0; transition: opacity 0.8s var(--ease), translate 1s var(--ease); }
+.rv-mq .rv-row.is-rev { translate: 90px 0; }
+.rv-mq.is-in .rv-row { opacity: 1; translate: 0 0; }
+.rv-mq.is-in .rv-row:nth-child(1) { transition-delay: 0.05s; }
+.rv-mq.is-in .rv-row:nth-child(2) { transition-delay: 0.3s; }
+.rv-mq.is-in .rv-row:nth-child(3) { transition-delay: 0.55s; }
+.rv-mq.is-in .rv-row:nth-child(4) { transition-delay: 0.8s; }
+@media (prefers-reduced-motion: reduce) { .rv-mq .rv-row { opacity: 1; translate: 0 0; } }
