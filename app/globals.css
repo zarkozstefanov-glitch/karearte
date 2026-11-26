@@ -4069,7 +4069,7 @@ html.pl-moving #preloader::before, html.pl-moving .pl-svg { opacity: 0; transiti
 }
 
 /* ---------- v7 preloader: bottle pour + name flies into the header ---------- */
-#preloader { background: none !important; clip-path: none !important; transition: none; animation: plFallback 0.01s linear 6s forwards; }
+#preloader { background: none !important; clip-path: none !important; transition: none; animation: plFallback 0.01s linear 4.6s forwards; }
 #preloader::before { content: none; }
 .pl-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 45%, #fbf3e0 0%, #f3e6c8 60%, #e9d6ab 100%); }
 .pl-bg::before {
@@ -4161,7 +4161,7 @@ html.pl-done #preloader { opacity: 0; transition: opacity 0.6s ease; }
 #pl-brush { filter: drop-shadow(5px 9px 7px rgba(0, 0, 0, 0.4)); }
 
 /* ---------- v10: preloader logo, hero reveal after preloader, bigger sun/moon ---------- */
-#preloader { animation: plFallback 0.01s linear 6s forwards; }
+#preloader { animation: plFallback 0.01s linear 4.6s forwards; }
 .pl-kare { font-family: var(--f-display), Georgia, serif; font-style: italic; font-weight: 600; font-size: 30px; fill: #1e1b2e; }
 .pl-arte { font-family: var(--f-brush), "Permanent Marker", cursive; font-size: 50px; letter-spacing: 2px; fill: #1e1b2e; }
 #pl-logo { transform-box: view-box; }
