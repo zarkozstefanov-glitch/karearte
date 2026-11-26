@@ -23,12 +23,16 @@ const d = (ms: number) => ({ "--d": `${ms}ms` }) as React.CSSProperties;
 
 /* ---------------- MENU ---------------- */
 export const menuMeta = (l: Lang) =>
-  pageMeta(l, "/menu/", T(l, "Меню", "Menu") + suffix(l), T(l, "Дневно меню с кафе, лимонади и горещ шоколад в ядлива чашка и вечерно меню с авторски коктейли, вино и плата.", "Day menu with coffee, lemonades and hot chocolate in an edible cup, and a night menu with signature cocktails, wine and boards."));
+  pageMeta(l, "/menu/", T(l, "Меню", "Menu") + suffix(l), T(l, "Кафе, лимонади, горещ шоколад в ядлива чашка, авторски коктейли, вино и плата — цялото меню на едно място.", "Coffee, lemonades, hot chocolate in an edible cup, signature cocktails, wine and boards — the whole menu in one place."));
 export function MenuPage({ lang }: { lang: Lang }) {
   return (
     <section className="sec menu-page">
       <div className="container">
-        <h1 className="sr-only">{T(lang, "Меню", "Menu")}</h1>
+        <header className="menu-head">
+          <p className="kicker">{T(lang, "КаРе-АртЕ", "KaRe-Arte")}</p>
+          <h1>{T(lang, "Меню", "Menu")}</h1>
+          <p className="menu-lead">{T(lang, "Кафе, лимонади, авторски коктейли, вино и нещо за хапване.", "Coffee, lemonades, signature cocktails, wine and something to nibble.")}</p>
+        </header>
         <MenuView lang={lang} />
       </div>
     </section>

@@ -1,16 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
-import { menu, tagLabel, eur, MENU_IS_DEMO, type Daypart } from "@/content/menu";
+import { useEffect, useRef, useState } from "react";
+import { menu, tagLabel, eur, MENU_IS_DEMO } from "@/content/menu";
 import { srcSet, media } from "@/lib/media";
-import { setTheme } from "@/lib/theme";
-import { useTheme } from "./useTheme";
 import type { Lang } from "@/lib/i18n";
-import { Moon, Sun } from "../Icons";
 
-/** Website menu + QR menu (/menu/?t=5). Day/night follows the site theme; switching one switches both. */
+/** Everything we serve in one list — coffee to cocktails to boards. Also the QR menu (/menu/?t=5). */
+const sections = [...menu.day, ...menu.night];
+
 export function MenuView({ lang }: { lang: Lang }) {
-  const theme = useTheme();
-  const part: Daypart = theme === "day" ? "day" : "night";
+  const cats = useRef<HTMLElement>(null);
   const [table, setTable] = useState<string | null>(null);
   const [active, setActive] = useState<string>("");
 
@@ -24,9 +22,17 @@ export function MenuView({ lang }: { lang: Lang }) {
     const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && setActive(e.target.id)), { rootMargin: "-30% 0px -60% 0px" });
     secs.forEach((s) => io.observe(s));
     return () => io.disconnect();
-  }, [part]);
+  }, []);
 
-  const sections = menu[part];
+  // keep the active category chip in view (phones scroll the chip row sideways)
+  useEffect(() => {
+    const row = cats.current;
+    const chip = row?.querySelector<HTMLElement>(`a[href="#${active}"]`);
+    if (!row || !chip) return;
+    const left = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
+    row.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+  }, [active]);
+
   return (
     <div className="menu-view">
       {table && (
@@ -34,15 +40,7 @@ export function MenuView({ lang }: { lang: Lang }) {
           {lang === "bg" ? `Маса ${table} · Покажи на бара или повикай с ръка — идваме.` : `Table ${table} · Wave at the bar — we'll come over.`}
         </div>
       )}
-      <div className="menu-switch" role="tablist" aria-label={lang === "bg" ? "Дневно или вечерно меню" : "Day or night menu"}>
-        <button role="tab" type="button" aria-selected={part === "day"} className={part === "day" ? "is-on" : ""} onClick={() => setTheme("day")}>
-          <Sun /> {lang === "bg" ? "Дневно" : "Day"}
-        </button>
-        <button role="tab" type="button" aria-selected={part === "night"} className={part === "night" ? "is-on" : ""} onClick={() => setTheme("night")}>
-          <Moon /> {lang === "bg" ? "Вечерно" : "Night"}
-        </button>
-      </div>
-      <nav className="menu-cats" aria-label={lang === "bg" ? "Категории" : "Categories"}>
+      <nav ref={cats} className="menu-cats" aria-label={lang === "bg" ? "Категории" : "Categories"}>
         {sections.map((s) => (
           <a key={s.id} href={`#${s.id}`} className={active === s.id ? "is-on" : ""}>
             {s.title[lang]}

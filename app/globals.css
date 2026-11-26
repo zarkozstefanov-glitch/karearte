@@ -4571,3 +4571,42 @@ html { background-color: var(--bg); }
   .site-header.is-open { background: color-mix(in srgb, var(--bg) 92%, transparent); transform: none; will-change: auto; -webkit-backdrop-filter: none; backdrop-filter: none; filter: none; contain: none; }
   .site-header .mobile-menu { position: fixed; inset: 0; z-index: 1; padding-top: calc(96px + env(safe-area-inset-top)); }
 }
+
+/* ---------- v22: menu — one list (no day/night split), sticky category chips, gap-free columns ---------- */
+.menu-page { padding-top: calc(var(--header-h) + clamp(28px, 4vw, 48px)); }
+.menu-head { max-width: 1180px; margin: 0 auto clamp(14px, 2vw, 22px); }
+.menu-head h1 { margin: 2px 0 6px; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1; }
+.menu-lead { margin: 0; color: var(--muted); font-size: clamp(0.98rem, 1.4vw, 1.1rem); }
+.menu-cats {
+  position: sticky;
+  top: calc(var(--header-h) + 8px);
+  z-index: 20;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin: 0 0 18px;
+  padding: 10px 0;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 70%, color-mix(in srgb, var(--bg) 0%, transparent) 100%);
+  transition: top 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.menu-cats::-webkit-scrollbar { display: none; }
+.menu-cats a { flex: none; }
+.menu-sections { display: block; columns: 2; column-gap: 22px; }
+.menu-sec { break-inside: avoid; -webkit-column-break-inside: avoid; display: block; margin: 0 0 22px; scroll-margin-top: calc(var(--header-h) + 76px); }
+.mi-line h3 { min-width: 0; }
+@media (max-width: 860px) {
+  .menu-sections { columns: 1; }
+  .menu-sec { margin-bottom: 14px; }
+}
+@media (max-width: 700px) {
+  .menu-page { padding-top: calc(96px + env(safe-area-inset-top)); }
+  /* chips sit under the header bubble; when the bubble hides, they move up to the top */
+  .menu-cats { top: calc(80px + env(safe-area-inset-top)); margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+  html.hdr-away .menu-cats { top: env(safe-area-inset-top); }
+  .menu-sec { scroll-margin-top: calc(140px + env(safe-area-inset-top)); }
+  .menu-items li { gap: 12px; }
+  .mi-img { width: 58px; height: 58px; }
+}
+@media (min-width: 701px) { .menu-cats { flex-wrap: wrap; overflow: visible; } }

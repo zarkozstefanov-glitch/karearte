@@ -34,6 +34,9 @@ export function Header({ lang }: { lang: Lang }) {
   }, [path]);
   useEffect(() => setOpen(false), [path]);
   useEffect(() => {
+    document.documentElement.classList.toggle("hdr-away", away && !open);
+  }, [away, open]);
+  useEffect(() => {
     document.documentElement.classList.toggle("menu-open", open);
     const k = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", k);

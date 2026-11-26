@@ -28,7 +28,7 @@ function write(guide,clip,w,start,dur,color){
 }
 function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{transform:'translate('+b+')'}],{duration:dur,delay:start,fill:F,easing:'cubic-bezier(.45,0,.55,1)'})}
 /* one timeline: every step starts where the previous ended; S scales the whole thing */
-var S=.52,t=0,ms=function(x){return Math.round(x*S)};
+var S=.442,t=0,ms=function(x){return Math.round(x*S)};
 function P(sel,d,c){d=ms(d);paint(sel,t,d,c);t+=d}
 function J(a,b,d){d=ms(d);hop(a,b,t,d);t+=d}
 function W(g,c,w,d,col){d=ms(d);write(g,c,w,t,d,col);t+=d}
