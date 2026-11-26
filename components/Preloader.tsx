@@ -98,35 +98,44 @@ export function Preloader() {
             </defs>
 
             <g className="pl-studio">
-              {/* back leg (behind the canvas) */}
-              <path d="M180 -6L180 452" stroke="#6b4422" strokeWidth="9" strokeLinecap="round" />
-              {/* front legs */}
-              <path d="M112 300L58 452M248 300L302 452" stroke="#8a5a2e" strokeWidth="11" strokeLinecap="round" />
-              <path d="M84 380H276" stroke="#7a4d26" strokeWidth="6" strokeLinecap="round" />
-              {/* top clamp */}
-              <rect x="160" y="-2" width="40" height="14" rx="3" fill="#8a5a2e" />
-              {/* canvas: thickness, face, stretched edge */}
-              <rect x="49" y="12" width="270" height="336" rx="2" fill="#d8d0bf" />
+              <defs>
+                <linearGradient id="pl-leg" x1="0" x2="1"><stop offset="0" stopColor="#5e3a18" /><stop offset=".45" stopColor="#c8873f" /><stop offset=".6" stopColor="#d9a05a" /><stop offset="1" stopColor="#6e451f" /></linearGradient>
+                <radialGradient id="pl-floor"><stop offset="0" stopColor="#000" stopOpacity=".55" /><stop offset="1" stopColor="#000" stopOpacity="0" /></radialGradient>
+                <linearGradient id="pl-seat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#d9a560" /><stop offset="1" stopColor="#9a6532" /></linearGradient>
+              </defs>
+              <ellipse cx="180" cy="454" rx="150" ry="14" fill="url(#pl-floor)" />
+              <ellipse cx="-36" cy="454" rx="58" ry="9" fill="url(#pl-floor)" />
+              <path d="M176 -6H184L186 452H174Z" fill="#5a3818" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <path d="M106 296L118 300L64 452H50Z" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <path d="M242 300L254 296L310 452H296Z" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <path d="M82 378H278V386H82Z" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <rect x="158" y="-4" width="44" height="16" rx="3" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <rect x="49" y="12" width="270" height="336" rx="2" fill="#cfc5b1" stroke="#9c927f" strokeWidth="1.2" />
               <rect x="45" y="8" width="270" height="336" rx="2" className="pl-canvas" />
-              <rect x="51" y="14" width="258" height="324" fill="none" stroke="#e6dfd0" strokeWidth="2" />
-              {/* ledge */}
-              <rect x="30" y="346" width="300" height="14" rx="4" fill="#9a6532" />
-              <rect x="30" y="346" width="300" height="4" rx="2" fill="#c08a4e" />
-              {/* stool with paints and brushes */}
+              <rect x="51" y="14" width="258" height="324" fill="none" stroke="#e7e0d1" strokeWidth="2" />
+              <path d="M45 8L51 14M315 8L309 14M45 344L51 338M315 344L309 338" stroke="#d6cdbb" strokeWidth="1.5" />
+              <rect x="28" y="344" width="304" height="16" rx="4" fill="url(#pl-seat)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+              <path d="M34 349H326" stroke="#f0c27c" strokeWidth="1.5" opacity=".7" />
               <g transform="translate(-36 0)">
-                <path d="M-26 372L-40 452M26 372L40 452M-4 372L-4 452" stroke="#6b4422" strokeWidth="7" strokeLinecap="round" />
-                <ellipse cx="0" cy="370" rx="46" ry="12" fill="#a8763e" />
-                <ellipse cx="0" cy="366" rx="46" ry="12" fill="#c8964f" />
-                <ellipse cx="-14" cy="356" rx="22" ry="8" fill="#efe6d2" stroke="#c9bfa9" strokeWidth="1" />
-                <circle cx="-24" cy="355" r="3.4" fill="#26408b" />
-                <circle cx="-14" cy="352" r="3" fill="#e8742a" />
-                <circle cx="-5" cy="356" r="3" fill="#f0a92a" />
-                <circle cx="-16" cy="360" r="2.6" fill="#9b1c31" />
-                <rect x="14" y="330" width="16" height="30" rx="3" fill="#bfe1e6" opacity=".85" />
-                <path d="M18 330L12 296M22 330L24 290M26 330L34 300" stroke="#8a5a2e" strokeWidth="2.6" strokeLinecap="round" />
-                <path d="M12 296l-2-6M24 290l0-6M34 300l2-6" stroke="#26408b" strokeWidth="3.4" strokeLinecap="round" />
-                <rect x="32" y="348" width="11" height="12" rx="2" fill="#e8742a" />
-                <rect x="-40" y="346" width="10" height="13" rx="2" fill="#26408b" />
+                <path d="M-30 370L-44 452H-36L-20 372Z" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+                <path d="M30 370L44 452H36L20 372Z" fill="url(#pl-leg)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+                <path d="M-3 374L-5 452H3L3 374Z" fill="#5a3818" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+                <path d="M-34 416H34" stroke="#7a4d26" strokeWidth="5" strokeLinecap="round" />
+                <ellipse cx="0" cy="372" rx="47" ry="13" fill="#7a4d26" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+                <ellipse cx="0" cy="367" rx="47" ry="13" fill="url(#pl-seat)" stroke="#3a210c" strokeWidth="1.6" strokeLinejoin="round" />
+                <path d="M-36 365Q0 360 36 365M-30 370Q0 366 30 370" stroke="#a9733a" strokeWidth=".9" fill="none" />
+                <path d="M-38 357C-40 349 -26 344 -12 346C2 347 8 352 4 357C1 361 -6 358 -9 361C-12 364 -16 365 -26 364C-34 363 -37 361 -38 357Z" fill="#e9dcc2" stroke="#9c8a68" strokeWidth="1.2" />
+                <ellipse cx="-4" cy="354" rx="3" ry="2" fill="#9c8a68" />
+                <circle cx="-30" cy="355" r="3.4" fill="#26408b" stroke="#1a2b63" strokeWidth=".8" />
+                <circle cx="-20" cy="351" r="3" fill="#e8742a" stroke="#a24f16" strokeWidth=".8" />
+                <circle cx="-11" cy="351" r="3" fill="#f0a92a" stroke="#a3700e" strokeWidth=".8" />
+                <circle cx="-22" cy="359" r="2.8" fill="#9b1c31" stroke="#5f0f1d" strokeWidth=".8" />
+                <path d="M14 328H31L30 360H15Z" fill="#cfe7ec" fillOpacity=".75" stroke="#7fa6ad" strokeWidth="1.2" />
+                <path d="M17 332V356" stroke="#fff" strokeWidth="2" opacity=".7" strokeLinecap="round" />
+                <path d="M18 330L12 294M23 330L24 288M27 330L35 298" stroke="#8a5a2e" strokeWidth="2.8" strokeLinecap="round" />
+                <path d="M12 294l-2-7M24 288v-7M35 298l2-7" stroke="#26408b" strokeWidth="3.6" strokeLinecap="round" />
+                <rect x="33" y="349" width="12" height="11" rx="2" fill="#e8742a" stroke="#a24f16" strokeWidth="1" />
+                <rect x="-44" y="347" width="11" height="13" rx="2" fill="#26408b" stroke="#1a2b63" strokeWidth="1" />
               </g>
             </g>
             <g transform="translate(36 21) scale(.78)">
