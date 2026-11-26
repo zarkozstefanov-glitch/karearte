@@ -4617,3 +4617,6 @@ html { background-color: var(--bg); }
   .orb-mark .logo-arte { font-size: 0.92rem; }
   .site-header .header-logo { margin: 0 0 -6px -6px; align-self: center; }
 }
+/* preloader: the glass is drawn with a thin glass-grey line, not thick ink */
+#preloader .pl-glass-line { stroke: #4a5a70; stroke-width: 2.6; }
+#pl-shine { transform-box: view-box; }

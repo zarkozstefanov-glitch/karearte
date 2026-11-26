@@ -36,9 +36,13 @@ brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transfor
 P('#pl-blue',760,'#26408b');      J('326px,160px','58px,222px',260);
 P('#pl-orange',560,'#e8742a');    J('306px,222px','78px,78px',300);
 P('#pl-swirl',460,'#f0a92a');     J('92px,82px','150px,232px',300);
-P('#pl-base',300,'#1e1b2e');      J('210px,232px','180px,229px',130);
-P('#pl-stem',280,'#1e1b2e');
-P('#pl-bowl-line',800,'#1e1b2e'); J('180px,174px','132px,262px',300);
+P('#pl-base',300,'#4a5a70');      J('210px,232px','180px,229px',130);
+P('#pl-stem',280,'#4a5a70');
+P('#pl-bowl-line',800,'#4a5a70');
+/* the outline turns into real glass: tinted body, rim, stem and base, then the highlights catch the light */
+q('#pl-glass').animate([{opacity:0},{opacity:1}],{duration:ms(620),delay:t,fill:F,easing:'ease-out'});
+q('#pl-shine').animate([{opacity:0,transform:'translateX(-6px)'},{opacity:1,transform:'none'}],{duration:ms(700),delay:t+ms(220),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
+J('180px,174px','132px,262px',300);
 P('#pl-box',700,'#1e1b2e');       J('132px,262px','140px,286px',180);
 W('#pl-g1','#pl-c1',96,540,'#1e1b2e'); J('220px,286px','116px,334px',220);
 W('#pl-g2','#pl-c2',140,760,'#1e1b2e'); J('246px,334px','268px,76px',340);
@@ -97,6 +101,25 @@ export function Preloader() {
                 <stop offset=".55" stopColor="#d8c39a" />
                 <stop offset="1" stopColor="#bfa577" />
               </linearGradient>
+              <linearGradient id="pl-glass-body" x1="0" x2="1">
+                <stop offset="0" stopColor="#9fb8d0" stopOpacity=".55" />
+                <stop offset=".22" stopColor="#ffffff" stopOpacity=".18" />
+                <stop offset=".62" stopColor="#ffffff" stopOpacity=".06" />
+                <stop offset="1" stopColor="#8aa6c2" stopOpacity=".55" />
+              </linearGradient>
+              <linearGradient id="pl-glass-v" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#ffffff" stopOpacity="0" />
+                <stop offset="1" stopColor="#6f8aa6" stopOpacity=".35" />
+              </linearGradient>
+              <linearGradient id="pl-glass-stem" x1="0" x2="1">
+                <stop offset="0" stopColor="#8ea8c2" stopOpacity=".8" />
+                <stop offset=".5" stopColor="#ffffff" stopOpacity=".9" />
+                <stop offset="1" stopColor="#7d98b4" stopOpacity=".8" />
+              </linearGradient>
+              <radialGradient id="pl-glass-foot" cx="50%" cy="40%" r="60%">
+                <stop offset="0" stopColor="#ffffff" stopOpacity=".85" />
+                <stop offset="1" stopColor="#8aa6c2" stopOpacity=".55" />
+              </radialGradient>
               <linearGradient id="pl-green" x1="0" x2="1">
                 <stop offset="0" stopColor="#1f3a24" />
                 <stop offset=".3" stopColor="#3f6b45" />
@@ -151,6 +174,12 @@ export function Preloader() {
             <path id="pl-orange" d="M58 222C118 252 206 186 306 222" className="pl-paint" stroke="#e8742a" strokeWidth="34" />
             <path id="pl-swirl" d="M78 78c12-18 40-12 38 8c-2 16-26 16-26 2c0-8 10-10 14-4" className="pl-paint pl-swirl" stroke="#f0a92a" strokeWidth="9" />
 
+            <g id="pl-glass" style={{ opacity: 0 }}>
+              <ellipse cx="180" cy="231" rx="30" ry="4.6" fill="url(#pl-glass-foot)" />
+              <path d="M177.6 174L178.4 228H181.6L182.4 174Z" fill="url(#pl-glass-stem)" />
+              <path d={GLASS_BOWL} fill="url(#pl-glass-body)" />
+              <path d={GLASS_BOWL} fill="url(#pl-glass-v)" />
+            </g>
             <g clipPath="url(#pl-bowl)">
               <g id="pl-wine" style={{ transform: "translateY(80px)" }}>
                 <path d="M140 102q10-5 20 0t20 0t20 0t20 0V180H140Z" fill="#9b1c31" />
@@ -158,9 +187,17 @@ export function Preloader() {
               </g>
             </g>
             <path id="pl-stream" d="M201 62C195 70 188 84 186 104L185 168" fill="none" stroke="#9b1c31" strokeWidth="5" strokeLinecap="round" />
-            <path id="pl-base" d="M150 232Q180 222 210 232" className="pl-ink" />
-            <path id="pl-stem" d="M180 229L180 174" className="pl-ink" />
-            <path id="pl-bowl-line" d="M180 174C161 170 146 134 148 78L212 78C214 134 199 170 180 174" className="pl-ink" />
+            <path id="pl-base" d="M150 232Q180 222 210 232" className="pl-ink pl-glass-line" />
+            <path id="pl-stem" d="M180 229L180 174" className="pl-ink pl-glass-line" />
+            <path id="pl-bowl-line" d="M180 174C161 170 146 134 148 78L212 78C214 134 199 170 180 174" className="pl-ink pl-glass-line" />
+            <g id="pl-shine" style={{ opacity: 0 }} fill="none" strokeLinecap="round">
+              <ellipse cx="180" cy="78" rx="31.5" ry="4.2" fill="#eef5fc" fillOpacity=".35" stroke="#4a5a70" strokeWidth="1.6" />
+              <path d="M156 90C154.5 118 160 145 170 161" stroke="#fff" strokeWidth="4" strokeOpacity=".8" />
+              <path d="M159 86C158.5 92 158.5 96 158.6 99" stroke="#fff" strokeWidth="2" strokeOpacity=".9" />
+              <path d="M205 94C206 110 204 123 199.5 134" stroke="#fff" strokeWidth="2.2" strokeOpacity=".5" />
+              <path d="M179.2 180V224" stroke="#fff" strokeWidth="1.1" strokeOpacity=".75" />
+              <path d="M161 230.5Q170 227.6 178 227.4" stroke="#fff" strokeWidth="1.6" strokeOpacity=".8" />
+            </g>
 
             <g id="pl-bottle">
               <g id="pl-bottle-fill" style={{ opacity: 0 }}>
