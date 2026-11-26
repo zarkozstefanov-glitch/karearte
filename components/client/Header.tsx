@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { nav, to, ui, href, type Lang } from "@/lib/i18n";
-import { Logo } from "../Logo";
+import { LogoOrb } from "../Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { site } from "@/content/site";
 import { Instagram, Phone } from "../Icons";
@@ -35,7 +35,7 @@ export function Header({ lang }: { lang: Lang }) {
     <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${open ? "is-open" : ""}`}>
       <div className="container header-row">
         <Link href={to(lang, "home")} className="header-logo" aria-label="KaRe-Arte">
-          <Logo />
+          <LogoOrb />
         </Link>
         <nav className="header-nav" aria-label={lang === "bg" ? "Основна навигация" : "Main navigation"}>
           {nav.map((n) => (

@@ -8,7 +8,6 @@ import { menu, eur } from "@/content/menu";
 import { to, ui, type Lang } from "@/lib/i18n";
 import { pageMeta, suffix, T } from "@/lib/meta";
 import { Img } from "../Img";
-import { LogoDisc } from "../Logo";
 import { Arrow, Google, Instagram, Star } from "../Icons";
 import { SecHead } from "../Chrome";
 import { EventCard } from "../EventCard";
@@ -106,7 +105,6 @@ export function Home({ lang }: { lang: Lang }) {
           </div>
           <div className="hero-art" data-reveal="right">
             <HeroVideo label={bg ? "Видео от заведението" : "Video from the venue"} />
-            <LogoDisc className="hero-disc" />
             <span className="hero-note">{bg ? "без табела отвън — нарочно" : "no sign outside — on purpose"}</span>
           </div>
         </div>
