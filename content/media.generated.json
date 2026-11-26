@@ -1,0 +1,398 @@
+{
+ "bar-neon": {
+  "w": 1440,
+  "h": 1080,
+  "color": "rgb(8,8,8)",
+  "max": 960
+ },
+ "interior-wide": {
+  "w": 1916,
+  "h": 1080,
+  "color": "rgb(24,24,24)",
+  "max": 1600
+ },
+ "bar-gabion": {
+  "w": 1920,
+  "h": 1080,
+  "color": "rgb(40,24,24)",
+  "max": 1600
+ },
+ "cocktails-bar": {
+  "w": 1513,
+  "h": 1080,
+  "color": "rgb(40,40,40)",
+  "max": 960
+ },
+ "stools-mural": {
+  "w": 864,
+  "h": 1080,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "garden-night": {
+  "w": 880,
+  "h": 520,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "cocktails-flatlay": {
+  "w": 880,
+  "h": 520,
+  "color": "rgb(248,200,72)",
+  "max": 480
+ },
+ "kare-sign": {
+  "w": 880,
+  "h": 520,
+  "color": "rgb(104,104,104)",
+  "max": 480
+ },
+ "blue-walls": {
+  "w": 880,
+  "h": 520,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "balloon-party": {
+  "w": 864,
+  "h": 1080,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "garden-corner": {
+  "w": 960,
+  "h": 960,
+  "color": "rgb(104,88,72)",
+  "max": 960
+ },
+ "garden-day": {
+  "w": 1920,
+  "h": 1280,
+  "color": "rgb(184,136,72)",
+  "max": 1600
+ },
+ "iced-latte": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(88,72,72)",
+  "max": 480
+ },
+ "art-armchairs": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(200,200,200)",
+  "max": 480
+ },
+ "art-lounge": {
+  "w": 1920,
+  "h": 1280,
+  "color": "rgb(184,184,184)",
+  "max": 1600
+ },
+ "flowers": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(120,120,136)",
+  "max": 480
+ },
+ "table-vase": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(136,120,104)",
+  "max": 480
+ },
+ "pedal-stool": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(168,88,40)",
+  "max": 480
+ },
+ "bar-garden-door": {
+  "w": 1920,
+  "h": 1280,
+  "color": "rgb(248,248,248)",
+  "max": 1600
+ },
+ "orange-sofa": {
+  "w": 1920,
+  "h": 1280,
+  "color": "rgb(248,248,248)",
+  "max": 1600
+ },
+ "coffee-snack": {
+  "w": 720,
+  "h": 1080,
+  "color": "rgb(152,120,88)",
+  "max": 480
+ },
+ "vangogh": {
+  "w": 1920,
+  "h": 1201,
+  "color": "rgb(200,184,168)",
+  "max": 1600
+ },
+ "cupffee": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "blue-cocktail": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(120,72,40)",
+  "max": 480
+ },
+ "sour": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(88,56,40)",
+  "max": 480
+ },
+ "bartenders": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "garden-spritz": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(200,184,136)",
+  "max": 480
+ },
+ "spritz-pour": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "night-guests": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ },
+ "night-table": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(24,24,24)",
+  "max": 480
+ },
+ "cocktail-menu": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(24,24,24)",
+  "max": 480
+ },
+ "hall-bar-wide": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "hall-left-curtain-table": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(56,56,56)",
+  "max": 1600
+ },
+ "hall-right-window-long-table": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "stairs-to-orange-room": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(8,8,8)",
+  "max": 960
+ },
+ "orange-room-sofas": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(104,72,56)",
+  "max": 1600
+ },
+ "orange-room-armchair-vangogh": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(184,72,8)",
+  "max": 960
+ },
+ "orange-room-door-view": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(168,72,8)",
+  "max": 960
+ },
+ "orange-room-swivel-chair": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(168,168,152)",
+  "max": 960
+ },
+ "hall-bar-stools": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(8,8,8)",
+  "max": 960
+ },
+ "hall-bar-high-table": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(168,168,152)",
+  "max": 960
+ },
+ "hall-glass-doors-terrace": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "hall-platform-vangogh": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(168,168,168)",
+  "max": 960
+ },
+ "hall-wood-table-view": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(152,152,136)",
+  "max": 960
+ },
+ "terrace1-high-tables": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(200,200,184)",
+  "max": 960
+ },
+ "terrace1-marble-tables": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "terrace1-long-view": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(8,8,8)",
+  "max": 960
+ },
+ "terrace1-center": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(200,200,200)",
+  "max": 960
+ },
+ "terrace1-bistro-sets": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(120,120,120)",
+  "max": 960
+ },
+ "terrace1-wire-chairs": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(200,200,200)",
+  "max": 960
+ },
+ "terrace1-corner-heater": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(120,120,120)",
+  "max": 960
+ },
+ "terrace1-from-far-end": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(200,200,200)",
+  "max": 960
+ },
+ "terrace1-by-door": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "hall-green-door-terrace2": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(56,56,40)",
+  "max": 960
+ },
+ "terrace2-lounge-wide": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(184,184,168)",
+  "max": 1600
+ },
+ "terrace2-rattan-sofa": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(248,248,248)",
+  "max": 960
+ },
+ "terrace2-rattan-chairs-door": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(200,200,184)",
+  "max": 960
+ },
+ "terrace2-stairs-up": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(232,232,232)",
+  "max": 960
+ },
+ "terrace2-sofa-poster": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(152,136,120)",
+  "max": 960
+ },
+ "terrace2-from-upper": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(8,8,8)",
+  "max": 960
+ },
+ "terrace2-railing-view": {
+  "w": 1350,
+  "h": 2400,
+  "color": "rgb(216,216,200)",
+  "max": 960
+ },
+ "terrace2-upper-yellow-chairs": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(8,8,8)",
+  "max": 1600
+ },
+ "hall-panorama-entrance": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(152,136,120)",
+  "max": 1600
+ },
+ "hall-panorama-laptop": {
+  "w": 2400,
+  "h": 1350,
+  "color": "rgb(24,24,24)",
+  "max": 1600
+ },
+ "night-mural-guests": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(56,40,24)",
+  "max": 480
+ },
+ "night-neon-lights": {
+  "w": 720,
+  "h": 1280,
+  "color": "rgb(8,8,8)",
+  "max": 480
+ }
+}

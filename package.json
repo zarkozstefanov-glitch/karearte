@@ -1,0 +1,24 @@
+{
+  "name": "@karearte/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "rm -rf .next && next build",
+    "start": "npx serve out -l 3000",
+    "images": "node scripts/build-images.mjs",
+    "video": "bash scripts/build-video.sh"
+  },
+  "dependencies": {
+    "next": "16.0.11",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "sharp": "0.34.5",
+    "typescript": "5.7.2"
+  }
+}
