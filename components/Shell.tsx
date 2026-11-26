@@ -14,7 +14,7 @@ const businessLd = (lang: Lang) => ({
   alternateName: ["КаРе-АртЕ", "Каре Арте", "Kare Arte"],
   description: site.tagline[lang],
   url: lang === "en" ? `${site.url}/en/` : `${site.url}/`,
-  image: [`${site.url}/og.jpg`],
+  image: [`${site.url}/og.jpg?v=20261126`],
   telephone: site.phone,
   priceRange: "€€",
   servesCuisine: ["Coffee", "Cocktails"],
