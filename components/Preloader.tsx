@@ -1,7 +1,7 @@
-/** Preloader (~5.5 s, once per session): a real paintbrush paints the canvas — the paint appears
+/** Preloader (~6 s, once per session): a real paintbrush paints the canvas — the paint appears
  *  exactly under the bristles. Blue wash → orange swoosh → yellow swirl → the wine glass drawn
- *  bottom-up (base, stem, bowl) → draws a wine bottle → the bottle
- *  tilts and pours red wine into the glass → the canvas fades away. */
+ *  bottom-up (base, stem, bowl) → the brush signs "KaRe-Arte" → draws a wine bottle → the bottle
+ *  tilts and pours red wine into the glass → the name pops and the canvas fades away. */
 export const preloaderScript = `;(function(){try{var d=document.documentElement;if(sessionStorage.getItem('ka-pl')||matchMedia('(prefers-reduced-motion: reduce)').matches){d.classList.add('pl-skip')}else{sessionStorage.setItem('ka-pl','1')}}catch(e){document.documentElement.classList.add('pl-skip')}})();`;
 
 const run = `;(function(){
@@ -14,34 +14,46 @@ var q=function(s){return root.querySelector(s)},F='forwards';
 function pts(path,n){var L=path.getTotalLength(),k=[];for(var i=0;i<=n;i++){var p=path.getPointAtLength(L*i/n);k.push({transform:'translate('+p.x.toFixed(1)+'px,'+p.y.toFixed(1)+'px)'})}return k}
 function paint(sel,start,dur,color,ease){
   var path=q(sel);ease=ease||'cubic-bezier(.4,0,.3,1)';
-  var L=path.getTotalLength();path.style.strokeDasharray=L+' '+L;path.style.strokeDashoffset=L;
-  path.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:dur,delay:start,fill:F,easing:ease});
+  /* the hidden dash sits 3px before the path start: Safari draws a dot for a zero-length round-capped dash */
+  var L=path.getTotalLength(),O=L+3;path.style.strokeDasharray=L+' '+(L+8);path.style.strokeDashoffset=O;
+  path.animate([{strokeDashoffset:O},{strokeDashoffset:0}],{duration:dur,delay:start,fill:F,easing:ease});
   brush.animate(pts(path,80),{duration:dur,delay:start,fill:F,easing:ease});
+  setTimeout(function(){tip.style.fill=color},start);
+}
+/* the reveal starts at 0.5px (a zero-width clip counts as "no clip" in Safari) and stays applied from the first frame */
+function write(guide,clip,w,start,dur,color){
+  brush.animate(pts(q(guide),72),{duration:dur,delay:start,fill:F,easing:'linear'});
+  q(clip).animate([{width:'0.5px'},{width:w+'px'}],{duration:dur,delay:start,fill:'both',easing:'linear'});
   setTimeout(function(){tip.style.fill=color},start);
 }
 function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{transform:'translate('+b+')'}],{duration:dur,delay:start,fill:F,easing:'cubic-bezier(.45,0,.55,1)'})}
 /* one timeline: every step starts where the previous ended; S scales the whole thing */
-var S=.6,t=0,ms=function(x){return Math.round(x*S)};
+var S=.52,t=0,ms=function(x){return Math.round(x*S)};
 function P(sel,d,c){d=ms(d);paint(sel,t,d,c);t+=d}
 function J(a,b,d){d=ms(d);hop(a,b,t,d);t+=d}
+function W(g,c,w,d,col){d=ms(d);write(g,c,w,t,d,col);t+=d}
 brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:ms(600),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});t=ms(600);
 P('#pl-blue',760,'#26408b');      J('326px,160px','58px,222px',260);
 P('#pl-orange',560,'#e8742a');    J('306px,222px','78px,78px',300);
 P('#pl-swirl',460,'#f0a92a');     J('92px,82px','150px,232px',300);
 P('#pl-base',300,'#1e1b2e');      J('210px,232px','180px,229px',130);
 P('#pl-stem',280,'#1e1b2e');
-P('#pl-bowl-line',800,'#1e1b2e'); J('180px,174px','268px,76px',420);
+P('#pl-bowl-line',800,'#1e1b2e'); J('180px,174px','132px,262px',300);
+P('#pl-box',700,'#1e1b2e');       J('132px,262px','140px,286px',180);
+W('#pl-g1','#pl-c1',96,540,'#1e1b2e'); J('220px,286px','116px,334px',220);
+W('#pl-g2','#pl-c2',140,760,'#1e1b2e'); J('246px,334px','268px,76px',340);
 P('#pl-bottle-line',700,'#1e1b2e');
 q('#pl-bottle-fill').animate([{opacity:0},{opacity:1}],{duration:ms(380),delay:t,fill:F,easing:'ease-out'});
 brush.animate([{opacity:1,transform:'translate(268px,76px)'},{opacity:0,transform:'translate(450px,30px) rotate(30deg)'}],{duration:ms(560),delay:t+ms(40),fill:F,easing:'cubic-bezier(.5,0,.75,0)'});
 var b0=t+ms(160),bd=ms(1500);
 q('#pl-bottle').animate([{transform:'none'},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.35},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.75},{transform:'none'}],{duration:bd,delay:b0,fill:F,easing:'cubic-bezier(.45,0,.35,1)'});
-var st=q('#pl-stream'),SL=st.getTotalLength();st.style.strokeDasharray=SL+' '+SL;st.style.strokeDashoffset=SL;
+var st=q('#pl-stream'),SL=st.getTotalLength();st.style.strokeDasharray=SL+' '+(SL+8);st.style.strokeDashoffset=SL+3;
 var s0=b0+Math.round(bd*.3);
-st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:ms(820),delay:s0,fill:F,easing:'linear'});
+st.animate([{strokeDashoffset:SL+3},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-(SL+3)}],{duration:ms(820),delay:s0,fill:F,easing:'linear'});
 q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:ms(800),delay:s0+ms(60),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
 t=b0+bd+ms(80);
-t+=ms(700);
+q('#pl-logo').animate([{transform:'scale(1)'},{transform:'scale(1.12)'},{transform:'scale(1.05)'}],{duration:ms(620),delay:t,fill:F,easing:'cubic-bezier(.34,1.56,.64,1)'});
+t+=ms(620)+ms(320);
 setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},950)},t);
 })();`;
 
@@ -162,6 +174,26 @@ export function Preloader() {
               <path id="pl-bottle-line" d={BOTTLE} className="pl-ink" />
             </g>
 
+            <defs>
+              <clipPath id="pl-k1"><rect id="pl-c1" x="132" y="258" width="0.5" height="46" /></clipPath>
+              <clipPath id="pl-k2"><rect id="pl-c2" x="110" y="300" width="0.5" height="56" /></clipPath>
+            </defs>
+            <g id="pl-logo" style={{ transformOrigin: "180px 300px" }}>
+              <path id="pl-box" d="M132 262H228V300H132Z" className="pl-ink" />
+              {/* the clip sits on a wrapping <g>: Safari ignores clip-path set directly on <text> */}
+              <g clipPath="url(#pl-k1)">
+                <text x="180" y="290" textAnchor="middle" className="pl-kare">
+                  kare
+                </text>
+              </g>
+              <g clipPath="url(#pl-k2)">
+                <text x="180" y="344" textAnchor="middle" className="pl-arte">
+                  ARTE
+                </text>
+              </g>
+            </g>
+            <path id="pl-g1" d="M140 286L220 284" fill="none" stroke="none" />
+            <path id="pl-g2" d="M116 334C140 326 160 340 186 330S228 326 246 332" fill="none" stroke="none" />
 
             {/* the paintbrush (bristle tip at 0,0) */}
             <g id="pl-brush" style={{ opacity: 0 }}>
