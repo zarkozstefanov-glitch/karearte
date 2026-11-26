@@ -30,18 +30,18 @@ function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{trans
 /* one timeline: every step starts where the previous ended; S scales the whole thing */
 var S=.442,t=0,ms=function(x){return Math.round(x*S)};
 function P(sel,d,c){d=ms(d);paint(sel,t,d,c);t+=d}
+/* the glass appears right under the brush: a clip grows with the stroke (foot left→right, stem and bowl
+   bottom→up). Clip on a <g>, starts at 0.5px and stays applied from the first frame — all Safari-safe. */
+function R(clip,prop,to,start,dur,part){var a={},b={};a[prop]='0.5px';b[prop]=to+'px';q(clip).animate([a,b],{duration:Math.round(dur*part),delay:start,fill:'both',easing:'cubic-bezier(.4,0,.3,1)'})}
 function J(a,b,d){d=ms(d);hop(a,b,t,d);t+=d}
 function W(g,c,w,d,col){d=ms(d);write(g,c,w,t,d,col);t+=d}
 brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:ms(600),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});t=ms(600);
 P('#pl-blue',760,'#26408b');      J('326px,160px','58px,222px',260);
 P('#pl-orange',560,'#e8742a');    J('306px,222px','78px,78px',300);
 P('#pl-swirl',460,'#f0a92a');     J('92px,82px','150px,232px',300);
-P('#pl-base',300,'#4a5a70');      J('210px,232px','180px,229px',130);
-P('#pl-stem',280,'#4a5a70');
-P('#pl-bowl-line',800,'#4a5a70');
-/* the outline turns into real glass: tinted body, rim, stem and base, then the highlights catch the light */
-q('#pl-glass').animate([{opacity:0},{opacity:1}],{duration:ms(620),delay:t,fill:F,easing:'ease-out'});
-q('#pl-shine').animate([{opacity:0,transform:'translateX(-6px)'},{opacity:1,transform:'none'}],{duration:ms(700),delay:t+ms(220),fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
+R('#pl-gc-foot','width',64,t,ms(300),1); P('#pl-base',300,'#4a5a70');      J('210px,232px','180px,229px',130);
+R('#pl-gc-stem','height',60,t,ms(280),1); P('#pl-stem',280,'#4a5a70');
+R('#pl-gc-bowl','height',106,t,ms(800),.5); P('#pl-bowl-line',800,'#4a5a70');
 J('180px,174px','132px,262px',300);
 P('#pl-box',700,'#1e1b2e');       J('132px,262px','140px,286px',180);
 W('#pl-g1','#pl-c1',96,540,'#1e1b2e'); J('220px,286px','116px,334px',220);
@@ -174,9 +174,19 @@ export function Preloader() {
             <path id="pl-orange" d="M58 222C118 252 206 186 306 222" className="pl-paint" stroke="#e8742a" strokeWidth="34" />
             <path id="pl-swirl" d="M78 78c12-18 40-12 38 8c-2 16-26 16-26 2c0-8 10-10 14-4" className="pl-paint pl-swirl" stroke="#f0a92a" strokeWidth="9" />
 
-            <g id="pl-glass" style={{ opacity: 0 }}>
+            <defs>
+              <clipPath id="pl-gk-foot"><rect id="pl-gc-foot" x="148" y="220" width="0.5" height="20" /></clipPath>
+              {/* stem and bowl clips are flipped (y grows upwards) so a growing height reveals bottom → up */}
+              <clipPath id="pl-gk-stem"><rect id="pl-gc-stem" x="168" y="173" width="24" height="0.5" transform="translate(0 404) scale(1 -1)" /></clipPath>
+              <clipPath id="pl-gk-bowl"><rect id="pl-gc-bowl" x="138" y="228" width="84" height="0.5" transform="translate(0 404) scale(1 -1)" /></clipPath>
+            </defs>
+            <g clipPath="url(#pl-gk-foot)">
               <ellipse cx="180" cy="231" rx="30" ry="4.6" fill="url(#pl-glass-foot)" />
+            </g>
+            <g clipPath="url(#pl-gk-stem)">
               <path d="M177.6 174L178.4 228H181.6L182.4 174Z" fill="url(#pl-glass-stem)" />
+            </g>
+            <g clipPath="url(#pl-gk-bowl)">
               <path d={GLASS_BOWL} fill="url(#pl-glass-body)" />
               <path d={GLASS_BOWL} fill="url(#pl-glass-v)" />
             </g>
@@ -190,7 +200,7 @@ export function Preloader() {
             <path id="pl-base" d="M150 232Q180 222 210 232" className="pl-ink pl-glass-line" />
             <path id="pl-stem" d="M180 229L180 174" className="pl-ink pl-glass-line" />
             <path id="pl-bowl-line" d="M180 174C161 170 146 134 148 78L212 78C214 134 199 170 180 174" className="pl-ink pl-glass-line" />
-            <g id="pl-shine" style={{ opacity: 0 }} fill="none" strokeLinecap="round">
+            <g id="pl-shine" clipPath="url(#pl-gk-bowl)" fill="none" strokeLinecap="round">
               <ellipse cx="180" cy="78" rx="31.5" ry="4.2" fill="#eef5fc" fillOpacity=".35" stroke="#4a5a70" strokeWidth="1.6" />
               <path d="M156 90C154.5 118 160 145 170 161" stroke="#fff" strokeWidth="4" strokeOpacity=".8" />
               <path d="M159 86C158.5 92 158.5 96 158.6 99" stroke="#fff" strokeWidth="2" strokeOpacity=".9" />
