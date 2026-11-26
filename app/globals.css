@@ -4509,3 +4509,6 @@ html.theme-snap, html.theme-snap *, html.theme-snap *::before, html.theme-snap *
 @keyframes rvRight2 { from { transform: translate3d(calc(var(--amp) * -0.42), 0, 0); } to { transform: translate3d(calc(var(--amp) * 0.42), 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .rv-row { animation: none !important; transform: none !important; } }
 .reviews-sec { overflow: clip !important; }
+/* rows: no sideways entrance (it fought the scroll motion) — just a short fade */
+.rv-mq .rv-row, .rv-mq .rv-row.is-rev, .rv-mq.is-in .rv-row { translate: none !important; }
+.rv-mq .rv-row { transition: opacity 0.5s ease !important; transition-delay: 0s !important; }
