@@ -196,7 +196,6 @@ export function Home({ lang }: { lang: Lang }) {
               )}
             </h2>
             <p className="lead">{about.lead[lang]}</p>
-            <p>{about.paragraphs[0][lang]}</p>
             <ul className="facts">
               {about.facts.map((f) => (
                 <li key={f.n}>
