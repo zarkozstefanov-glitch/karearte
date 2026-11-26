@@ -4160,3 +4160,26 @@ html.pl-done #preloader { opacity: 0; transition: opacity 0.6s ease; }
 #preloader .pl-ink { fill: none; stroke: #1e1b2e; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0 9999; }
 #pl-stream { stroke-dasharray: 0 9999; }
 #pl-brush { filter: drop-shadow(5px 9px 7px rgba(0, 0, 0, 0.4)); }
+
+/* ---------- v10: preloader logo, hero reveal after preloader, bigger sun/moon ---------- */
+#preloader { animation: plFallback 0.01s linear 6s forwards; }
+.pl-kare { font-family: var(--f-display), Georgia, serif; font-style: italic; font-weight: 600; font-size: 30px; fill: #1e1b2e; }
+.pl-arte { font-family: var(--f-brush), "Permanent Marker", cursive; font-size: 50px; letter-spacing: 2px; fill: #1e1b2e; }
+#pl-logo { transform-box: view-box; }
+.pl-tag { margin-top: 34px; }
+/* hero waits for the preloader, then its elements come in one by one */
+html:not(.pl-skip):not(.pl-done) .hero [data-reveal],
+html:not(.pl-skip):not(.pl-done) .hero .hero-marquee { opacity: 0 !important; transform: translate3d(0, 34px, 0) !important; }
+html.pl-done .hero [data-reveal] { transition-delay: calc(var(--d, 0ms) + 180ms); }
+.hero .hero-marquee { transition: opacity 0.8s var(--ease) 0.7s, transform 0.8s var(--ease) 0.7s; }
+/* sun / moon: bigger and a bit higher */
+.header-logo { margin-top: -6px; }
+.logo-orb { width: 112px; height: 112px; }
+.orb-mark .logo-kare { font-size: 0.8rem; }
+.orb-mark .logo-arte { font-size: 1.14rem; }
+@media (max-width: 700px) {
+  .header-logo { margin-top: -4px; }
+  .logo-orb { width: 86px; height: 86px; }
+  .orb-mark .logo-kare { font-size: 0.66rem; }
+  .orb-mark .logo-arte { font-size: 0.92rem; }
+}

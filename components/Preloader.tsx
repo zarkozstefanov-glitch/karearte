@@ -8,7 +8,7 @@ const run = `;(function(){
 var H=document.documentElement;if(H.classList.contains('pl-skip'))return;
 var root=document.getElementById('preloader');if(!root)return;
 var stage=root.querySelector('.pl-stage');
-var fit=function(){stage.style.setProperty('--s',(Math.min(innerWidth*.92,innerHeight*.78,620)/360).toFixed(3))};fit();addEventListener('resize',fit);
+var fit=function(){stage.style.setProperty('--s',(Math.min(innerWidth*.8,innerHeight*.62,500)/360).toFixed(3))};fit();addEventListener('resize',fit);
 var svg=root.querySelector('svg'),brush=svg.querySelector('#pl-brush'),tip=svg.querySelector('#pl-tip');
 var q=function(s){return root.querySelector(s)},F='forwards';
 function pts(path,n){var L=path.getTotalLength(),k=[];for(var i=0;i<=n;i++){var p=path.getPointAtLength(L*i/n);k.push({transform:'translate('+p.x.toFixed(1)+'px,'+p.y.toFixed(1)+'px)'})}return k}
@@ -19,33 +19,34 @@ function paint(sel,start,dur,color,ease){
   brush.animate(pts(path,40),{duration:dur,delay:start,fill:F,easing:ease});
   setTimeout(function(){tip.style.fill=color},start);
 }
+function write(guide,clip,w,start,dur,color){
+  brush.animate(pts(q(guide),36),{duration:dur,delay:start,fill:F,easing:'linear'});
+  q(clip).animate([{width:'0px'},{width:w+'px'}],{duration:dur,delay:start,fill:F,easing:'linear'});
+  setTimeout(function(){tip.style.fill=color},start);
+}
 function hop(a,b,start,dur){brush.animate([{transform:'translate('+a+')'},{transform:'translate('+b+')'}],{duration:dur,delay:start,fill:F,easing:'ease-in-out'})}
-brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:180,fill:F,easing:'ease-out'});
-paint('#pl-blue',180,300,'#26408b');      hop('326px,160px','58px,222px',480,40);
-paint('#pl-orange',520,220,'#e8742a');    hop('306px,222px','78px,78px',740,30);
-paint('#pl-swirl',770,130,'#f0a92a');     hop('92px,82px','150px,232px',900,40);
-paint('#pl-base',940,100,'#1e1b2e');      hop('210px,232px','180px,229px',1040,20);
-paint('#pl-stem',1060,100,'#1e1b2e');
-paint('#pl-bowl-line',1180,320,'#1e1b2e');hop('180px,174px','66px,300px',1500,40);
-/* signature: a clip grows in lock-step with the brush */
-var name=q('.pl-name');
-brush.animate(pts(q('#pl-sig'),36),{duration:360,delay:1540,fill:F,easing:'linear'});
-name.animate([{clipPath:'inset(0 100% 0 0)'},{clipPath:'inset(0 0% 0 0)'}],{duration:360,delay:1540,fill:F,easing:'linear'});
-setTimeout(function(){tip.style.fill='#c8361c'},1540);
-hop('304px,300px','268px,76px',1900,60);
+brush.animate([{opacity:0,transform:'translate(420px,40px)'},{opacity:1,transform:'translate(46px,150px)'}],{duration:220,fill:F,easing:'ease-out'});
+paint('#pl-blue',220,380,'#26408b');      hop('326px,160px','58px,222px',600,50);
+paint('#pl-orange',650,280,'#e8742a');    hop('306px,222px','78px,78px',930,40);
+paint('#pl-swirl',970,160,'#f0a92a');     hop('92px,82px','150px,232px',1130,50);
+paint('#pl-base',1180,120,'#1e1b2e');     hop('210px,232px','180px,229px',1300,20);
+paint('#pl-stem',1320,120,'#1e1b2e');
+paint('#pl-bowl-line',1460,400,'#1e1b2e');hop('180px,174px','132px,262px',1860,60);
+/* the logo, like in the header: the box, then "kare", then the brushed "ARTE" */
+paint('#pl-box',1920,380,'#1e1b2e');      hop('132px,262px','140px,286px',2300,40);
+write('#pl-g1','#pl-c1',96,2340,280,'#1e1b2e'); hop('220px,286px','116px,334px',2620,40);
+write('#pl-g2','#pl-c2',140,2660,400,'#1e1b2e'); hop('246px,334px','268px,76px',3060,70);
 /* the bottle */
-paint('#pl-bottle-line',1960,300,'#1e1b2e');
-q('#pl-bottle-fill').animate([{opacity:0},{opacity:1}],{duration:140,delay:2240,fill:F});
-brush.animate([{opacity:1,transform:'translate(268px,76px)'},{opacity:0,transform:'translate(450px,30px) rotate(30deg)'}],{duration:180,delay:2260,fill:F,easing:'ease-in'});
-/* tilt & pour */
-q('#pl-bottle').animate([{transform:'none'},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.35},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.75},{transform:'none'}],{duration:800,delay:2300,fill:F,easing:'cubic-bezier(.45,0,.35,1)'});
+paint('#pl-bottle-line',3130,370,'#1e1b2e');
+q('#pl-bottle-fill').animate([{opacity:0},{opacity:1}],{duration:160,delay:3480,fill:F});
+brush.animate([{opacity:1,transform:'translate(268px,76px)'},{opacity:0,transform:'translate(450px,30px) rotate(30deg)'}],{duration:200,delay:3500,fill:F,easing:'ease-in'});
+q('#pl-bottle').animate([{transform:'none'},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.35},{transform:'translate(0px,-133px) rotate(-120deg)',offset:.75},{transform:'none'}],{duration:900,delay:3540,fill:F,easing:'cubic-bezier(.45,0,.35,1)'});
 var st=q('#pl-stream'),SL=st.getTotalLength();st.style.strokeDasharray=SL+' '+SL;st.style.strokeDashoffset=SL;
-st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:420,delay:2560,fill:F,easing:'linear'});
-q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:380,delay:2600,fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
-/* finale: the name pops, the canvas fades */
-name.animate([{transform:'scale(1)'},{transform:'scale(1.16)'},{transform:'scale(1.06)'}],{duration:280,delay:3000,fill:F,easing:'ease-out'});
-q('.pl-tag').animate([{opacity:0},{opacity:1}],{duration:250,delay:1700,fill:F});
-setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},600)},3300);
+st.animate([{strokeDashoffset:SL},{strokeDashoffset:0,offset:.25},{strokeDashoffset:0,offset:.7},{strokeDashoffset:-SL}],{duration:470,delay:3830,fill:F,easing:'linear'});
+q('#pl-wine').animate([{transform:'translateY(80px)'},{transform:'translateY(0px)'}],{duration:430,delay:3870,fill:F,easing:'cubic-bezier(.2,.7,.3,1)'});
+q('#pl-logo').animate([{transform:'scale(1)'},{transform:'scale(1.14)'},{transform:'scale(1.05)'}],{duration:300,delay:4440,fill:F,easing:'ease-out'});
+q('.pl-tag').animate([{opacity:0},{opacity:1}],{duration:250,delay:3100,fill:F});
+setTimeout(function(){H.classList.add('pl-done');setTimeout(function(){H.classList.add('pl-gone')},650)},4750);
 })();`;
 
 const GLASS_BOWL = "M148 78C146 134 161 170 180 174C199 170 214 134 212 78Z";
@@ -123,7 +124,21 @@ export function Preloader() {
               <path id="pl-bottle-line" d={BOTTLE} className="pl-ink" />
             </g>
 
-            <path id="pl-sig" d="M66 300C96 290 110 308 140 298S190 290 220 300S270 292 304 300" fill="none" stroke="none" />
+            <defs>
+              <clipPath id="pl-k1"><rect id="pl-c1" x="132" y="258" width="0" height="46" /></clipPath>
+              <clipPath id="pl-k2"><rect id="pl-c2" x="110" y="300" width="0" height="56" /></clipPath>
+            </defs>
+            <g id="pl-logo" style={{ transformOrigin: "180px 300px" }}>
+              <path id="pl-box" d="M132 262H228V300H132Z" className="pl-ink" />
+              <text x="180" y="290" textAnchor="middle" className="pl-kare" clipPath="url(#pl-k1)">
+                kare
+              </text>
+              <text x="180" y="344" textAnchor="middle" className="pl-arte" clipPath="url(#pl-k2)">
+                ARTE
+              </text>
+            </g>
+            <path id="pl-g1" d="M140 286L220 284" fill="none" stroke="none" />
+            <path id="pl-g2" d="M116 334C140 326 160 340 186 330S228 326 246 332" fill="none" stroke="none" />
 
             {/* the paintbrush (bristle tip at 0,0) */}
             <g id="pl-brush" style={{ opacity: 0 }}>
@@ -139,9 +154,7 @@ export function Preloader() {
               </g>
             </g>
           </svg>
-          <div className="pl-name" style={{ clipPath: "inset(0 100% 0 0)" }}>
-            KaRe-Arte
-          </div>
+          
           <p className="pl-tag">бар-галерия · bar-gallery</p>
         </div>
       </div>
