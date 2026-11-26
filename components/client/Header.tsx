@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { nav, to, ui, href, type Lang } from "@/lib/i18n";
+import { syncBarColor } from "@/lib/theme";
 import { LogoOrb } from "../Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { site } from "@/content/site";
@@ -14,11 +15,14 @@ export function Header({ lang }: { lang: Lang }) {
   const path = usePathname() || "/";
 
   useEffect(() => {
-    const on = () => setScrolled(window.scrollY > 24);
+    const on = () => {
+      setScrolled(window.scrollY > 24);
+      syncBarColor();
+    };
     on();
     window.addEventListener("scroll", on, { passive: true });
     return () => window.removeEventListener("scroll", on);
-  }, []);
+  }, [path]);
   useEffect(() => setOpen(false), [path]);
   useEffect(() => {
     document.documentElement.classList.toggle("menu-open", open);

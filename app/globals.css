@@ -4531,3 +4531,13 @@ html { background-color: var(--bg); }
   }
   .site-header.is-open { background: var(--bg); }
 }
+/* phones, top of the page: no header background at all — the hero runs up under the status bar */
+@media (max-width: 900px) {
+  .site-header:not(.is-scrolled):not(.is-open),
+  [data-theme="day"] .site-header:not(.is-scrolled):not(.is-open) {
+    background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+}
