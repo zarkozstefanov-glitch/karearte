@@ -2,7 +2,6 @@ import Link from "next/link";
 import { site } from "@/content/site";
 import { upcoming } from "@/content/events";
 import { reviews, praised, reviewText } from "@/content/reviews";
-import { ScrollVar } from "../client/ScrollVar";
 import { faq, about } from "@/content/pages";
 import { menu, eur } from "@/content/menu";
 import { to, ui, type Lang } from "@/lib/i18n";
@@ -16,6 +15,7 @@ import { OpenStatus } from "../client/OpenStatus";
 import { ThemeShowcase } from "../client/ThemeShowcase";
 import { ReviewGrid } from "../client/ReviewGrid";
 import { Praised } from "../client/Praised";
+import { ScrollRows } from "../client/ScrollRows";
 import { Reels } from "../client/Reels";
 import { MapEmbed } from "../client/MapEmbed";
 
@@ -136,7 +136,7 @@ export function Home({ lang }: { lang: Lang }) {
             </span>
           </a>
         </div>
-        <ScrollVar />
+        <ScrollRows />
         <div className="rv-mq" aria-label={bg ? "Откъси от отзиви" : "Review snippets"}>
           {[0, 1, 2, 3].map((row) => {
             const list = reviews.filter((_, i) => i % 4 === row);

@@ -9,35 +9,54 @@ export function Praised({ children, count }: { children: React.ReactNode; count:
   const bar = useRef<HTMLSpanElement>(null);
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let raf = 0;
-    const on = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const o = outer.current, t = track.current;
-        if (!o || !t) return;
-        const dist = t.scrollWidth - t.clientWidth;
-        if (reduce.matches || dist <= 4) {
-          o.classList.remove("is-active");
-          o.style.height = "";
-          t.style.transform = "";
-          return;
-        }
-        o.classList.add("is-active");
-        const stickyH = (o.firstElementChild as HTMLElement).offsetHeight;
-        o.style.height = `${stickyH + dist * 1.1}px`;
-        const r = o.getBoundingClientRect();
-        const top = parseFloat(getComputedStyle(o.firstElementChild as HTMLElement).top) || 0;
-        const p = Math.min(1, Math.max(0, (top - r.top) / (o.offsetHeight - stickyH)));
-        t.style.transform = `translate3d(${-p * dist}px,0,0)`;
-        if (bar.current) bar.current.style.transform = `scaleX(${p})`;
-      });
+    const o = outer.current!, t = track.current!, sticky = o.firstElementChild as HTMLElement;
+    // geometry is measured only on resize; scrolling just reads one rect and moves the track
+    let dist = 0, stickyTop = 0, range = 1, active = false, raf = 0, last = -1;
+    const measure = () => {
+      t.style.transform = "";
+      dist = t.scrollWidth - t.clientWidth;
+      active = !reduce.matches && dist > 4;
+      o.classList.toggle("is-active", active);
+      if (!active) {
+        o.style.height = "";
+        return;
+      }
+      const stickyH = sticky.offsetHeight;
+      o.style.height = `${stickyH + dist * 1.1}px`;
+      stickyTop = parseFloat(getComputedStyle(sticky).top) || 0;
+      range = Math.max(1, o.offsetHeight - stickyH);
+      last = -1;
+      frame();
     };
-    on();
-    window.addEventListener("scroll", on, { passive: true });
-    window.addEventListener("resize", on);
+    const frame = () => {
+      raf = 0;
+      if (!active) return;
+      const p = Math.min(1, Math.max(0, (stickyTop - o.getBoundingClientRect().top) / range));
+      if (p === last) return;
+      last = p;
+      t.style.transform = `translate3d(${(-p * dist).toFixed(1)}px,0,0)`;
+      if (bar.current) bar.current.style.transform = `scaleX(${p.toFixed(4)})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+    let rt = 0;
+    const onResize = () => {
+      clearTimeout(rt);
+      rt = window.setTimeout(measure, 120);
+    };
+    measure();
+    // images/fonts can change widths after first paint
+    const ro = new ResizeObserver(onResize);
+    ro.observe(t);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
     return () => {
-      window.removeEventListener("scroll", on);
-      window.removeEventListener("resize", on);
+      cancelAnimationFrame(raf);
+      clearTimeout(rt);
+      ro.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
     };
   }, []);
   return (

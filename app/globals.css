@@ -4444,3 +4444,68 @@ html.pl-done .logo-orb, html.pl-skip .logo-orb { animation: orbIn 0.7s var(--eas
 .rv-mq.is-in .rv-row:nth-child(3) { transition-delay: 0.55s; }
 .rv-mq.is-in .rv-row:nth-child(4) { transition-delay: 0.8s; }
 @media (prefers-reduced-motion: reduce) { .rv-mq .rv-row { opacity: 1; translate: 0 0; } }
+
+/* ---------- v17: theme switch = the sun / moon sets into the bottom-right corner, the other rises from the left (desktop) ---------- */
+.orb-sky { position: fixed; inset: 0; z-index: 9999; pointer-events: none; overflow: hidden; contain: strict; view-transition-name: ka-sky; }
+.orb-fly { position: absolute; left: 0; top: 0; display: grid; place-items: center; will-change: transform, opacity; }
+.orb-fly svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.orb-fly-sun { filter: drop-shadow(0 0 8px rgba(255, 214, 90, 0.7)); }
+.orb-fly-moon { filter: drop-shadow(0 0 8px rgba(150, 180, 255, 0.65)); }
+.logo-orb.is-away { visibility: hidden; }
+/* the flying layer stays live (not a frozen snapshot) during the page cross-fade */
+::view-transition-old(ka-sky) { display: none; }
+::view-transition-new(ka-sky), ::view-transition-group(ka-sky) { animation: none; }
+.vt-theme::view-transition-new(root) { animation: vtIn 1s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.vt-theme::view-transition-old(root) { animation: vtOut 1s cubic-bezier(0.4, 0, 0.2, 1) both; }
+.praised-track { will-change: transform; }
+
+/* ---------- v18: review rows drift with the scroll on the compositor (no JS, no per-frame style recalc) ---------- */
+.rv-row, .rv-row.is-rev, .rv-row:nth-child(3), .rv-row:nth-child(4) { transform: none; }
+@supports (animation-timeline: view()) {
+  .rv-mq { view-timeline: --rv block; }
+  .rv-row { animation: rvDriftL linear both; animation-timeline: --rv; animation-range: cover; }
+  .rv-row.is-rev { animation-name: rvDriftR; }
+  .rv-row:nth-child(3) { animation-name: rvDriftL2; }
+  .rv-row:nth-child(4) { animation-name: rvDriftR2; }
+}
+@keyframes rvDriftL { from { transform: translate3d(260px, 0, 0); } to { transform: translate3d(-260px, 0, 0); } }
+@keyframes rvDriftR { from { transform: translate3d(-260px, 0, 0); } to { transform: translate3d(260px, 0, 0); } }
+@keyframes rvDriftL2 { from { transform: translate3d(180px, 0, 0); } to { transform: translate3d(-180px, 0, 0); } }
+@keyframes rvDriftR2 { from { transform: translate3d(-200px, 0, 0); } to { transform: translate3d(200px, 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .rv-row { animation: none !important; } }
+.rv-track { will-change: transform; backface-visibility: hidden; }
+/* rows never freeze under the cursor */
+.rv-mq:hover .rv-track { animation-play-state: running; }
+/* desktop wipe: the old page stays put, the new one is revealed under the travelling band */
+.vt-wipe::view-transition-old(root), .vt-wipe::view-transition-new(root) { animation: none; }
+.vt-wipe::view-transition-new(root) { clip-path: polygon(0 0, 0 0, 0 0); }
+.orb-band { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; transform-origin: 50% 50%; }
+/* going to night: a dusk band (amber → violet) */
+.orb-band-night { background: linear-gradient(180deg, rgba(255, 170, 80, 0) 0%, rgba(255, 150, 70, 0.55) 38%, rgba(255, 214, 140, 0.95) 50%, rgba(160, 120, 255, 0.5) 62%, rgba(60, 70, 180, 0) 100%); filter: blur(6px); }
+/* going to day: a dawn band (soft gold light) */
+.orb-band-day { background: linear-gradient(180deg, rgba(255, 236, 170, 0) 0%, rgba(255, 220, 130, 0.55) 38%, rgba(255, 250, 225, 0.98) 50%, rgba(255, 196, 110, 0.5) 62%, rgba(255, 180, 90, 0) 100%); filter: blur(6px); }
+/* theme switch: no colour transitions while the new theme is captured (prevents a light flash) */
+html.theme-snap, html.theme-snap *, html.theme-snap *::before, html.theme-snap *::after { transition: none !important; }
+/* phone cross-fade: the old page stays solid, the new one fades in on top (no mid-way dip) */
+.vt-theme::view-transition-old(root) { animation: none; opacity: 1; }
+.vt-theme::view-transition-new(root) { animation: vtIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) both; }
+
+/* ---------- v19: review rows move ONLY with the scroll (down: odd rows left, even rows right; up: back; still when not scrolling) ---------- */
+.rv-mq { --amp: 600px; }
+@media (max-width: 700px) { .rv-mq { --amp: 280px; } }
+.rv-track, .rv-mq:hover .rv-track { animation: none !important; }
+.rv-track { margin-left: -1200px !important; }
+.rv-row:nth-child(2) .rv-track { margin-left: -1380px !important; }
+.rv-row:nth-child(4) .rv-track { margin-left: -1300px !important; }
+@supports (animation-timeline: view()) {
+  .rv-row { animation: rvLeft linear both; animation-timeline: --rv; animation-range: cover; }
+  .rv-row.is-rev { animation-name: rvRight; }
+  .rv-row:nth-child(3) { animation-name: rvLeft2; }
+  .rv-row:nth-child(4) { animation-name: rvRight2; }
+}
+@keyframes rvLeft { from { transform: translate3d(calc(var(--amp) * 0.5), 0, 0); } to { transform: translate3d(calc(var(--amp) * -0.5), 0, 0); } }
+@keyframes rvRight { from { transform: translate3d(calc(var(--amp) * -0.5), 0, 0); } to { transform: translate3d(calc(var(--amp) * 0.5), 0, 0); } }
+@keyframes rvLeft2 { from { transform: translate3d(calc(var(--amp) * 0.4), 0, 0); } to { transform: translate3d(calc(var(--amp) * -0.4), 0, 0); } }
+@keyframes rvRight2 { from { transform: translate3d(calc(var(--amp) * -0.42), 0, 0); } to { transform: translate3d(calc(var(--amp) * 0.42), 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .rv-row { animation: none !important; transform: none !important; } }
+.reviews-sec { overflow: clip !important; }
