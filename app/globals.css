@@ -4781,3 +4781,13 @@ html { background-color: var(--bg); }
 /* pages without an intro: the first section starts right under the header */
 main > section.sec:first-child:not(.hero):not(.menu-page):not(.res-page) { padding-top: calc(var(--header-h) + 28px); }
 @media (max-width: 700px) { main > section.sec:first-child:not(.hero):not(.menu-page):not(.res-page) { padding-top: calc(96px + env(safe-area-inset-top)); } }
+/* menu: every category is a full-width band; on wide screens its items sit in two columns */
+.menu-sections { align-items: stretch !important; max-width: none !important; width: 100%; }
+.menu-sec { width: 100%; }
+.menu-view .menu-cats { max-width: none; }
+@media (min-width: 900px) {
+  .menu-sec .menu-items { columns: 2; column-gap: 56px; }
+  .menu-sec .menu-items li { break-inside: avoid; }
+  .menu-sec .menu-items li:last-child { border-bottom: 1px solid var(--line); padding-bottom: 15px; }
+}
+@media (min-width: 701px) { .menu-cats { top: calc(var(--header-h) + 40px) !important; } .menu-sec { scroll-margin-top: calc(var(--header-h) + 150px); } }
