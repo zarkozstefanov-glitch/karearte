@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { FloorPlan, type Avail } from "./FloorPlan";
+import { type Avail } from "./FloorPlan";
+import { CafeMap } from "./CafeMap";
 import {
   MAX_ONLINE_GUESTS,
   bookableDays,
@@ -24,7 +25,12 @@ import { ArrowLeft, Arrow, Calendar, Clock, Pin } from "../Icons";
 
 const T = {
   bg: {
-    steps: ["Кога", "Къде", "Данни", "Готово"],
+    steps: ["Колко души?", "Кой ден?", "Колко часа?", "Коя маса?", "Твоите данни", "Готово"],
+    chips: ["гости", "ден", "час", "маса"],
+    today: "Днес",
+    tomorrow: "Утре",
+    any: "Без значение",
+    later: "Повече дни",
     guests: "Гости",
     guestsN: (n: number) => `${n} ${n === 1 ? "гост" : "гости"}`,
     more: "Повече от 12? Това е частно събитие —",
@@ -70,7 +76,12 @@ const T = {
     wd: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"],
   },
   en: {
-    steps: ["When", "Where", "Details", "Done"],
+    steps: ["How many?", "Which day?", "What time?", "Which table?", "Your details", "Done"],
+    chips: ["guests", "day", "time", "table"],
+    today: "Today",
+    tomorrow: "Tomorrow",
+    any: "No preference",
+    later: "More days",
     guests: "Guests",
     guestsN: (n: number) => `${n} ${n === 1 ? "guest" : "guests"}`,
     more: "More than 12? That's a private event —",
@@ -136,6 +147,7 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
   const [done, setDone] = useState<Reservation | null>(null);
   const [mine, setMine] = useState<Reservation[]>([]);
   const [wantTable, setWantTable] = useState<string | null>(null);
+  const [focus, setFocus] = useState<Table | null>(null);
 
   useEffect(() => {
     if (!days[0]) return;
@@ -157,7 +169,7 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
   }, [date, guests]);
 
   useEffect(() => {
-    if (step !== 1 || !date || !time) return;
+    if (step !== 3 || !date || !time) return;
     setStatus(null);
     getAvailability(date, time, guests).then((st) => {
       setStatus(st);
@@ -173,7 +185,7 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
     setStep(n);
     requestAnimationFrame(() => {
       const el = document.getElementById("res-top");
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 84, behavior: "smooth" });
+      if (el) window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 90), behavior: "smooth" });
     });
   };
 
@@ -202,7 +214,7 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
     if (r.ok) {
       setDone(r.reservation);
       setMine(myReservations());
-      go(3);
+      go(5);
     } else setError(true);
   }
 
@@ -225,11 +237,9 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
       <span>
         <b>{guests}</b> {lang === "bg" ? (guests === 1 ? "гост" : "гости") : guests === 1 ? "guest" : "guests"}
       </span>
-      {step > 0 && (
-        <span>
-          <Pin /> {where}
-        </span>
-      )}
+      <span>
+        <Pin /> {where}
+      </span>
       {edit && (
         <button type="button" className="res-edit" onClick={() => go(0)}>
           {t.change}
@@ -257,56 +267,69 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
     return g;
   }, [slots]);
 
+  const guestsWord = (n: number) => (lang === "bg" ? (n === 1 ? "гост" : "гости") : n === 1 ? "guest" : "guests");
+  const pickedLabel = table ? table.name[lang].split(" · ")[0] : t.any;
+  const chipVals = [`${guests} ${guestsWord(guests)}`, date ? fmt(date, { weekday: "short", day: "numeric", month: "short" }) : "—", time || "—", pickedLabel];
+  const quickDays = days.slice(0, 2);
+
   return (
-    <div className="res-flow" id="res-top">
-      <ol className="res-steps" aria-label={lang === "bg" ? "Стъпки" : "Steps"}>
-        {t.steps.map((s, i) => (
-          <li key={s} className={i === step ? "is-cur" : i < step ? "is-done" : ""} aria-current={i === step ? "step" : undefined}>
-            <span>{i + 1}</span>
-            {s}
-          </li>
-        ))}
-      </ol>
+    <div className="res-flow res-wiz" id="res-top" data-step={step}>
+      {step < 5 && (
+        <nav className="wz-bar" aria-label={lang === "bg" ? "Твоят избор" : "Your choices"}>
+          {chipVals.map((v, i) => (
+            <button key={i} type="button" className={`wz-chip ${i === step ? "is-cur" : ""} ${i < step ? "is-done" : ""}`} disabled={i > step} onClick={() => go(i)}>
+              <small>{t.chips[i]}</small>
+              <b>{i <= step || i < 3 ? v : "—"}</b>
+            </button>
+          ))}
+          <span className="wz-progress" style={{ "--p": `${(step / 4) * 100}%` } as React.CSSProperties} />
+        </nav>
+      )}
+
+      {step < 5 && (
+        <div className="wz-head">
+          {step > 0 && (
+            <button type="button" className="wz-back" onClick={() => go(step - 1)} aria-label={t.back}>
+              <ArrowLeft />
+            </button>
+          )}
+          <h2>{t.steps[step]}</h2>
+          <span className="wz-count">
+            {step + 1}/5
+          </span>
+        </div>
+      )}
 
       {step === 0 && (
-        <section className="res-card res-when">
-          <div className="rw-col rw-guests">
-            <h3>{t.guests}</h3>
-            <div className="stepper">
-              <button type="button" onClick={() => setGuests((g) => Math.max(1, g - 1))} disabled={guests <= 1} aria-label="−">
-                −
+        <section className="wz-step wz-guests">
+          <div className="wz-grid12">
+            {Array.from({ length: MAX_ONLINE_GUESTS }, (_, i) => i + 1).map((n) => (
+              <button key={n} type="button" className={guests === n ? "is-on" : ""} onClick={() => { setGuests(n); go(1); }}>
+                {n}
               </button>
-              <output aria-live="polite">
-                <b>{guests}</b>
-                <small>{lang === "bg" ? (guests === 1 ? "гост" : "гости") : guests === 1 ? "guest" : "guests"}</small>
-              </output>
-              <button type="button" onClick={() => setGuests((g) => Math.min(MAX_ONLINE_GUESTS, g + 1))} disabled={guests >= MAX_ONLINE_GUESTS} aria-label="+">
-                +
-              </button>
-            </div>
-            <div className="g-quick">
-              {[2, 4, 6, 8].map((n) => (
-                <button key={n} type="button" className={guests === n ? "is-on" : ""} onClick={() => setGuests(n)}>
-                  {n}
-                </button>
-              ))}
-            </div>
-            <p className="res-hint">
-              {t.more}{" "}
-              <a
-                href="?type=private"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.dispatchEvent(new CustomEvent("ka-res-tab", { detail: "private" }));
-                }}
-              >
-                {t.moreLink}
-              </a>
-              .
-            </p>
+            ))}
           </div>
+          <p className="res-hint">
+            {t.more}{" "}
+            <a href="?type=private" onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent("ka-res-tab", { detail: "private" })); }}>
+              {t.moreLink}
+            </a>
+            .
+          </p>
+        </section>
+      )}
 
-          <div className="rw-col rw-cal">
+      {step === 1 && (
+        <section className="wz-step wz-day">
+          <div className="wz-quick">
+            {quickDays.map((d, i) => (
+              <button key={d} type="button" className={d === date ? "is-on" : ""} onClick={() => { setDate(d); go(2); }}>
+                <b>{i === 0 ? t.today : t.tomorrow}</b>
+                <small>{fmt(d, { weekday: "short", day: "numeric", month: "short" })}</small>
+              </button>
+            ))}
+          </div>
+          <div className="wz-cal">
             <div className="cal-head">
               <h3>{month ? new Intl.DateTimeFormat(loc, { month: "long", year: "numeric" }).format(month) : t.date}</h3>
               <div>
@@ -320,13 +343,11 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
             </div>
             <div className="cal" role="grid">
               {t.wd.map((w) => (
-                <span key={w} className="cal-wd">
-                  {w}
-                </span>
+                <span key={w} className="cal-wd">{w}</span>
               ))}
               {cal.map((d, i) =>
                 d ? (
-                  <button key={d} type="button" disabled={!daySet.has(d)} className={`cal-d ${d === date ? "is-on" : ""} ${d === days[0] ? "is-today" : ""}`} onClick={() => setDate(d)} aria-pressed={d === date}>
+                  <button key={d} type="button" disabled={!daySet.has(d)} className={`cal-d ${d === date ? "is-on" : ""} ${d === days[0] ? "is-today" : ""}`} onClick={() => { setDate(d); go(2); }} aria-pressed={d === date}>
                     {parseISODate(d).getDate()}
                   </button>
                 ) : (
@@ -335,134 +356,117 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
               )}
             </div>
           </div>
-
-          <div className="rw-col rw-time">
-            <h3>{date ? fmt(date, { weekday: "long", day: "numeric", month: "long" }) : t.time}</h3>
-            {!slots ? (
-              <div className="slots is-loading" aria-busy="true">
-                {Array.from({ length: 12 }, (_, i) => (
-                  <span key={i} className="slot sk" />
-                ))}
-              </div>
-            ) : slots.every((s) => s.state === "full") ? (
-              <p className="res-hint">
-                {t.noSlots} <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
-              </p>
-            ) : (
-              <div className="slot-groups">
-                {groups.map((g, gi) =>
-                  g.length ? (
-                    <div key={gi}>
-                      <small className="sg-label">{t.groups[gi]}</small>
-                      <div className="slots">
-                        {g.map((s) => (
-                          <button key={s.time} type="button" disabled={s.state === "full"} className={`slot st-${s.state} ${time === s.time ? "is-on" : ""}`} onClick={() => setTime(s.time)} aria-pressed={time === s.time}>
-                            {s.time}
-                            {s.state === "few" && <i title={t.few} />}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null,
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className="res-bar">
-            <SummaryLine />
-            <button type="button" className="btn btn-accent btn-lg" disabled={!date || !time} onClick={() => go(1)}>
-              {t.next} <Arrow />
-            </button>
-          </div>
-        </section>
-      )}
-
-      {step === 1 && (
-        <section className="res-card res-where">
-          <div className="res-bar res-bar-top">
-            <SummaryLine edit />
-            {status && (
-              <span className="res-free">
-                <i />
-                {lang === "bg" ? `${Object.values(status).filter((a) => a.s === "free").length} свободни маси в ${time}` : `${Object.values(status).filter((a) => a.s === "free").length} free tables at ${time}`}
-              </span>
-            )}
-          </div>
-          {!status ? (
-            <p className="res-loading">{t.loading}</p>
-          ) : (
-            <FloorPlan
-              lang={lang}
-              mode="pick"
-              status={status}
-              picked={tableId}
-              guests={guests}
-              time={time}
-              onPick={(tb: Table | null) => setTableId(tb ? tb.id : null)}
-              onTime={(x) => {
-                setWantTable(null);
-                setTime(x);
-              }}
-            />
-          )}
-          <div className="res-bar">
-            <div className="res-any">
-              {!tableId ? (
-                <>
-                  <span className="res-hint">{t.zonePref}</span>
-                  {zones.map((z) => (
-                    <button key={z.id} type="button" className={`chip ${zone === z.id ? "is-on" : ""}`} aria-pressed={zone === z.id} onClick={() => setZone(zone === z.id ? null : z.id)}>
-                      {z.short[lang]}
-                    </button>
-                  ))}
-                </>
-              ) : (
-                <button type="button" className="chip" onClick={() => setTableId(null)}>
-                  {t.anywhere}
-                </button>
-              )}
-            </div>
-            <div className="res-nav-inline">
-              <button type="button" className="btn btn-line" onClick={() => go(0)}>
-                <ArrowLeft /> {t.back}
-              </button>
-              <button type="button" className="btn btn-accent btn-lg" onClick={() => go(2)}>
-                {t.toDetails} <Arrow />
-              </button>
-            </div>
-          </div>
         </section>
       )}
 
       {step === 2 && (
-        <section className="res-card res-details">
+        <section className="wz-step wz-time">
+          {!slots ? (
+            <div className="slots is-loading" aria-busy="true">
+              {Array.from({ length: 12 }, (_, i) => (
+                <span key={i} className="slot sk" />
+              ))}
+            </div>
+          ) : slots.every((x) => x.state === "full") ? (
+            <p className="res-hint">
+              {t.noSlots} <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
+            </p>
+          ) : (
+            <div className="slot-groups">
+              {groups.map((g, gi) =>
+                g.length ? (
+                  <div key={gi}>
+                    <small className="sg-label">{t.groups[gi]}</small>
+                    <div className="slots">
+                      {g.map((x) => (
+                        <button key={x.time} type="button" disabled={x.state === "full"} className={`slot st-${x.state} ${time === x.time ? "is-on" : ""}`} onClick={() => { setTime(x.time); go(3); }} aria-pressed={time === x.time}>
+                          {x.time}
+                          {x.state === "few" && <i title={t.few} />}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null,
+              )}
+            </div>
+          )}
+        </section>
+      )}
+
+      {step === 3 && (
+        <section className="wz-step wz-table">
+          {!status ? (
+            <p className="res-loading">{t.loading}</p>
+          ) : (
+            <>
+              <CafeMap
+                lang={lang}
+                status={status}
+                picked={tableId}
+                onSelect={(tb: Table) => {
+                  setFocus(tb);
+                  if (status[tb.id]?.s === "free") {
+                    setTableId(tb.id);
+                    window.setTimeout(() => go(4), 450);
+                  }
+                }}
+              />
+              {focus && status[focus.id]?.s !== "free" ? (
+                <div className="fp-mini">
+                  <div>
+                    <b>{focus.name[lang].split(" · ")[0]}</b>
+                    <span>
+                      {focus.seats} {lang === "bg" ? "места" : "seats"} ·{" "}
+                      <i className={`fp-mini-s s-${status[focus.id]?.s ?? "walkin"}`}>
+                        {status[focus.id]?.s === "taken"
+                          ? (lang === "bg" ? `заета до ${status[focus.id]?.until}` : `taken until ${status[focus.id]?.until}`)
+                          : status[focus.id]?.s === "small"
+                            ? (lang === "bg" ? `до ${focus.seats} души` : `up to ${focus.seats}`)
+                            : lang === "bg" ? "без резервация" : "walk-in only"}
+                      </i>
+                    </span>
+                  </div>
+                  {status[focus.id]?.s === "taken" && status[focus.id]?.until && status[focus.id]?.until !== "00:00" && (
+                    <button type="button" className="btn btn-sm btn-line" onClick={() => { setWantTable(focus.id); setTime(status[focus.id]!.until!); }}>
+                      {lang === "bg" ? `Смени на ${status[focus.id]?.until}` : `Switch to ${status[focus.id]?.until}`}
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <p className="fp-mini-hint">{lang === "bg" ? "Натисни зелена маса — или „Без значение“" : "Tap a green table — or “No preference”"}</p>
+              )}
+            </>
+          )}
+          <div className="wz-actions">
+            <button type="button" className="btn btn-line" onClick={() => { setTableId(null); go(4); }}>
+              {t.any}
+            </button>
+            {tableId && (
+              <button type="button" className="btn btn-accent" onClick={() => go(4)}>
+                {t.toDetails} <Arrow />
+              </button>
+            )}
+          </div>
+        </section>
+      )}
+
+      {step === 4 && (
+        <section className="wz-step wz-details">
           <form onSubmit={submit} className="booking">
-            <h3>{t.details}</h3>
             <div className="f-grid">
               <label className="f f-wide">
                 <span>{t.name}</span>
-                <input name="name" required autoComplete="name" minLength={2} maxLength={80} />
+                <input name="name" required autoComplete="name" minLength={2} maxLength={80} placeholder={t.name} />
               </label>
               <label className="f">
                 <span>{t.phone}</span>
-                <input name="phone" type="tel" required autoComplete="tel" inputMode="tel" pattern={"[0-9 +\\(\\)\\-]{6,}"} />
+                <input name="phone" type="tel" required autoComplete="tel" inputMode="tel" pattern={"[0-9 +\\(\\)\\-]{6,}"} placeholder={t.phone} />
               </label>
               <label className="f">
                 <span>{t.email}</span>
-                <input name="email" type="email" autoComplete="email" />
+                <input name="email" type="email" autoComplete="email" placeholder={t.email} />
               </label>
-              <label className="f">
-                <span>{t.occasion}</span>
-                <select name="occasion">
-                  {t.occ.map((o) => (
-                    <option key={o} value={o}>
-                      {o || "—"}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label className="f">
+              <label className="f f-wide">
                 <span>{t.note}</span>
                 <input name="note" maxLength={500} placeholder={t.notePh} />
               </label>
@@ -473,37 +477,21 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
                 {t.consent} <Link href={to(lang, "privacy")}>{t.privacy}</Link>
               </span>
             </label>
-            <label className="f-check">
-              <input type="checkbox" name="marketing" value="yes" />
-              <span>{t.marketing}</span>
-            </label>
             {error && (
               <p className="form-err" role="alert">
                 {t.err} <a href={`tel:${site.phone}`}>{site.phoneDisplay}</a>
               </p>
             )}
-            <div className="res-nav-inline">
-              <button type="button" className="btn btn-line" onClick={() => go(1)}>
-                <ArrowLeft /> {t.back}
-              </button>
-              <button className="btn btn-accent btn-lg" disabled={sending}>
-                {sending ? t.sending : t.send}
-              </button>
-            </div>
-          </form>
-          <aside className="res-side">
-            {table && <img className="res-side-ph" src={`/img/${table.photos[0]}-960.webp`} alt="" />}
-            <div className="res-summary">
-              <p className="kicker">{t.summary}</p>
-              <SummaryLine edit />
-            </div>
+            <button className="btn btn-accent btn-lg wz-send" disabled={sending}>
+              {sending ? t.sending : t.send}
+            </button>
             <p className="res-hint">{t.hold}</p>
-          </aside>
+          </form>
         </section>
       )}
 
-      {step === 3 && done && (
-        <section className="res-card res-done" role="status">
+      {step === 5 && done && (
+        <section className="wz-step res-done" role="status">
           <div className="done-mark" aria-hidden="true">
             <svg viewBox="0 0 52 52">
               <circle cx="26" cy="26" r="24" />
@@ -522,15 +510,7 @@ export function ReservationFlow({ lang }: { lang: Lang }) {
             <button type="button" className="btn btn-line" onClick={() => downloadIcs(done)}>
               <Calendar /> {t.ics}
             </button>
-            <button
-              type="button"
-              className="btn btn-accent"
-              onClick={() => {
-                setDone(null);
-                setTableId(null);
-                go(0);
-              }}
-            >
+            <button type="button" className="btn btn-accent" onClick={() => { setDone(null); setTableId(null); go(0); }}>
               {t.newRes}
             </button>
           </div>

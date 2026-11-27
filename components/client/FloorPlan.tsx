@@ -17,11 +17,13 @@ type Props = {
   guests?: number;
   time?: string;
   onTime?: (time: string) => void;
+  /** booking wizard: no zone/table descriptions, just the plan and a one-line status */
+  minimal?: boolean;
 };
 
 const FULL: [number, number, number, number] = [0, 0, PLAN_W, PLAN_H];
 
-export function FloorPlan({ lang, mode = "explore", status, picked, onPick, guests = 2, time, onTime }: Props) {
+export function FloorPlan({ lang, mode = "explore", status, picked, onPick, guests = 2, time, onTime, minimal = false }: Props) {
   const bg = lang === "bg";
   const [zone, setZone] = useState<ZoneId | "all">("all");
   const [sel, setSel] = useState<Sel>(() => (mode === "explore" ? { kind: "table", t: tables.find((t) => t.id === "2")! } : { kind: "zone", z: "hall" }));
@@ -48,7 +50,7 @@ export function FloorPlan({ lang, mode = "explore", status, picked, onPick, gues
   };
 
   return (
-    <div className={`fp fp-${mode}`}>
+    <div className={`fp fp-${mode} ${minimal ? "fp-min" : ""}`}>
       <div className="fp-tabs" role="tablist" aria-label={bg ? "Зони" : "Zones"}>
         <button role="tab" type="button" aria-selected={zone === "all"} className={`chip ${zone === "all" ? "is-on" : ""}`} onClick={() => setZone("all")}>
           {bg ? "Цялото място" : "Whole venue"}
@@ -124,9 +126,39 @@ export function FloorPlan({ lang, mode = "explore", status, picked, onPick, gues
         </div>
 
         <aside className="fp-panel fp-panel-text-only" aria-live="polite">
-          <Panel sel={sel} lang={lang} mode={mode} status={status} picked={picked} onPick={onPick} guests={guests} onTime={onTime} />
+          {minimal ? <MiniPanel sel={sel} lang={lang} status={status} picked={picked} onPick={onPick} onTime={onTime} /> : <Panel sel={sel} lang={lang} mode={mode} status={status} picked={picked} onPick={onPick} guests={guests} onTime={onTime} />}
         </aside>
       </div>
+    </div>
+  );
+}
+
+/** one line: which table, how many seats, free/taken — and the action */
+function MiniPanel({ sel, lang, status, picked, onPick, onTime }: { sel: Sel; lang: Lang; status?: Record<string, Avail>; picked?: string | null; onPick?: (t: Table | null) => void; onTime?: (t: string) => void }) {
+  const bg = lang === "bg";
+  if (sel.kind !== "table") return <p className="fp-mini-hint">{bg ? "Натисни зелена маса на плана" : "Tap a green table on the plan"}</p>;
+  const t = sel.t;
+  const a = status?.[t.id];
+  const state =
+    a?.s === "free" ? (bg ? `свободна до ${a.until}` : `free until ${a.until}`) : a?.s === "taken" ? (bg ? `заета до ${a.until}` : `taken until ${a.until}`) : a?.s === "small" ? (bg ? `до ${t.seats} души` : `up to ${t.seats}`) : bg ? "без резервация" : "walk-in only";
+  return (
+    <div className="fp-mini">
+      <div>
+        <b>{t.name[lang].split(" · ")[0]}</b>
+        <span>
+          {t.seats} {bg ? "места" : "seats"} · <i className={`fp-mini-s s-${a?.s ?? "walkin"}`}>{state}</i>
+        </span>
+      </div>
+      {a?.s === "free" && (
+        <button type="button" className={`btn btn-sm ${picked === t.id ? "btn-line" : "btn-accent"}`} onClick={() => onPick?.(picked === t.id ? null : t)}>
+          {picked === t.id ? (bg ? "Избрана ✓" : "Picked ✓") : bg ? "Избери" : "Pick"}
+        </button>
+      )}
+      {a?.s === "taken" && a.until && a.until !== "00:00" && (
+        <button type="button" className="btn btn-sm btn-line" onClick={() => onTime?.(a.until!)}>
+          {bg ? `Смени на ${a.until}` : `Switch to ${a.until}`}
+        </button>
+      )}
     </div>
   );
 }
