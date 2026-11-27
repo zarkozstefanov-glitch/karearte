@@ -70,7 +70,7 @@ export function Home({ lang }: { lang: Lang }) {
       <section className="hero">
         <div className="hero-bg" aria-hidden="true">
           <Img id="interior-wide" lang={lang} priority sizes="100vw" className="hero-bg-night" alt="" />
-          <Img id="hall-bar-wide" lang={lang} sizes="100vw" className="hero-bg-day" alt="" />
+          <Img id="garden-day" lang={lang} sizes="100vw" className="hero-bg-day" alt="" />
         </div>
         <div className="container hero-grid">
           <div className="hero-copy">
@@ -331,7 +331,7 @@ export function Home({ lang }: { lang: Lang }) {
             </Link>
           </SecHead>
           <div className="gt-grid">
-            {["hall-panorama-entrance", "terrace2-upper-yellow-chairs", "orange-room-armchair-vangogh", "blue-cocktail", "orange-room-sofas", "terrace1-long-view", "garden-night"].map((id, i) => (
+            {["interior-wide", "garden-corner", "art-armchairs", "blue-cocktail", "garden-day", "cocktail-menu", "garden-night"].map((id, i) => (
               <Link key={id} href={to(lang, "gallery")} className={`gt gt-${i}`} data-reveal="up" style={{ "--d": `${i * 60}ms` } as React.CSSProperties}>
                 <Img id={id} lang={lang} sizes="(min-width: 1000px) 33vw, 50vw" />
               </Link>
@@ -344,7 +344,7 @@ export function Home({ lang }: { lang: Lang }) {
       <section className="sec space-sec">
         <div className="container space-grid">
           <Link href={to(lang, "space")} className="space-card" data-reveal="left">
-            <Img id="orange-room-sofas" lang={lang} sizes="(min-width: 900px) 50vw, 100vw" />
+            <Img id="art-armchairs" lang={lang} sizes="(min-width: 900px) 50vw, 100vw" />
             <div>
               <p className="kicker">{bg ? "Пространството" : "The space"}</p>
               <h3>{bg ? "Зала, оранжева стая и две тераси. Разгледай ги и си избери маса." : "A hall, an orange room and two terraces. Look around and pick a table."}</h3>
@@ -354,7 +354,7 @@ export function Home({ lang }: { lang: Lang }) {
             </div>
           </Link>
           <Link href={`${to(lang, "reservations")}?type=private`} className="space-card is-accent" data-reveal="right">
-            <Img id="terrace1-long-view" lang={lang} sizes="(min-width: 900px) 50vw, 100vw" />
+            <Img id="garden-corner" lang={lang} sizes="(min-width: 900px) 50vw, 100vw" />
             <div>
               <p className="kicker">{bg ? "Частни събития" : "Private events"}</p>
               <h3>{bg ? "Рожден ден, тиймбилдинг, моминско? Цялото място е твое." : "Birthday, team-building, bachelorette? The whole place is yours."}</h3>

@@ -378,9 +378,9 @@ export function AboutPage({ lang }: { lang: Lang }) {
             </ul>
           </div>
           <div className="about-stack">
-            <Img id="hall-panorama-entrance" lang={lang} sizes="(min-width: 900px) 40vw, 100vw" />
+            <Img id="interior-wide" lang={lang} sizes="(min-width: 900px) 40vw, 100vw" />
             <Img id="bartenders" lang={lang} sizes="(min-width: 900px) 20vw, 50vw" />
-            <Img id="orange-room-armchair-vangogh" lang={lang} sizes="(min-width: 900px) 20vw, 50vw" />
+            <Img id="art-armchairs" lang={lang} sizes="(min-width: 900px) 20vw, 50vw" />
           </div>
         </div>
       </section>

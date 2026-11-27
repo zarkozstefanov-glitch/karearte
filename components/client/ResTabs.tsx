@@ -31,7 +31,7 @@ export function ResTabs({ lang }: { lang: Lang }) {
             <BookingForm lang={lang} initial="private" lockKind />
           </div>
           <aside className="res-aside">
-            <img src="/img/terrace2-lounge-wide-960.webp" alt="" loading="lazy" />
+            <img src="/img/garden-day-960.webp" alt="" loading="lazy" />
             <h3>{bg ? "Цялото място е твое" : "The whole place is yours"}</h3>
             <ul className="ticks">
               <li>{bg ? "До 50 гости в залата, оранжевата стая и терасите." : "Up to 50 guests across the hall, orange room and terraces."}</li>

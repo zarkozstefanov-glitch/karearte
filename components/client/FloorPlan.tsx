@@ -2,9 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { PLAN_H, PLAN_W, photoSpots, tables, zones, zoneOf, type ChairStyle, type PhotoSpot, type Table, type TopStyle, type ZoneId } from "@/content/floorplan";
-import { media, srcSet } from "@/lib/media";
 import { to, type Lang } from "@/lib/i18n";
-import { ArrowLeft, Arrow } from "../Icons";
 
 export type TableStatus = "free" | "taken" | "small" | "walkin";
 export type Avail = { s: TableStatus; until?: string };
@@ -27,10 +25,8 @@ export function FloorPlan({ lang, mode = "explore", status, picked, onPick, gues
   const bg = lang === "bg";
   const [zone, setZone] = useState<ZoneId | "all">("all");
   const [sel, setSel] = useState<Sel>(() => (mode === "explore" ? { kind: "table", t: tables.find((t) => t.id === "2")! } : { kind: "zone", z: "hall" }));
-  const [photo, setPhoto] = useState(0);
   const vb = useViewBox(zone === "all" ? FULL : zoneOf(zone).view);
 
-  useEffect(() => setPhoto(0), [sel]);
   useEffect(() => {
     if (mode === "pick" && picked) {
       const t = tables.find((x) => x.id === picked);
@@ -44,8 +40,6 @@ export function FloorPlan({ lang, mode = "explore", status, picked, onPick, gues
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [picked]);
 
-  const photos = sel.kind === "table" ? sel.t.photos : sel.kind === "spot" ? sel.s.photos : zoneOf(sel.z).photos;
-  const cur = photos[photo % photos.length];
   const selZone = sel.kind === "table" ? sel.t.zone : sel.kind === "spot" ? sel.s.zone : sel.z;
 
   const choose = (t: Table) => {
@@ -123,30 +117,13 @@ export function FloorPlan({ lang, mode = "explore", status, picked, onPick, gues
               </>
             ) : (
               <>
-                <span><i className="lg lg-num" /> {bg ? "Маса — натисни за снимка" : "Table — tap for a photo"}</span>
-                <span><i className="lg lg-cam" /> {bg ? "Още снимки" : "More photos"}</span>
+                <span><i className="lg lg-num" /> {bg ? "Натисни маса за подробности" : "Tap a table for details"}</span>
               </>
             )}
           </div>
         </div>
 
-        <aside className="fp-panel" aria-live="polite">
-          <div className="fp-photo" style={{ background: media[cur]?.color }}>
-            <img key={cur} {...srcSet(cur)} sizes="(min-width: 1000px) 34vw, 100vw" alt={media[cur][lang]} />
-            {photos.length > 1 && (
-              <>
-                <button type="button" className="fp-ph-btn fp-ph-prev" onClick={() => setPhoto((p) => (p - 1 + photos.length) % photos.length)} aria-label={bg ? "Предишна снимка" : "Previous photo"}>
-                  <ArrowLeft />
-                </button>
-                <button type="button" className="fp-ph-btn fp-ph-next" onClick={() => setPhoto((p) => (p + 1) % photos.length)} aria-label={bg ? "Следваща снимка" : "Next photo"}>
-                  <Arrow />
-                </button>
-                <span className="fp-ph-count">
-                  {(photo % photos.length) + 1}/{photos.length}
-                </span>
-              </>
-            )}
-          </div>
+        <aside className="fp-panel fp-panel-text-only" aria-live="polite">
           <Panel sel={sel} lang={lang} mode={mode} status={status} picked={picked} onPick={onPick} guests={guests} onTime={onTime} />
         </aside>
       </div>

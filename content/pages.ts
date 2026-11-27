@@ -73,7 +73,7 @@ export const findSteps: { title: L; text: L; img: string }[] = [
       bg: "Минаваш покрай картините и стигаш до жълтия неон KaReArte. Добре дошъл.",
       en: "Walk past the paintings to the yellow KaReArte neon. Welcome.",
     },
-    img: "hall-panorama-entrance",
+    img: "bar-neon",
   },
 ];
 
