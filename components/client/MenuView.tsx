@@ -54,12 +54,7 @@ export function MenuView({ lang }: { lang: Lang }) {
           {s.note && <p className="menu-note">{s.note[lang]}</p>}
           <ul className="menu-items">
             {s.items.map((it) => (
-              <li key={it.name.en} className={it.img ? "has-img" : ""}>
-                {it.img && (
-                  <span className="mi-img" style={{ background: media[it.img].color }}>
-                    <img {...srcSet(it.img)} sizes="96px" alt="" loading="lazy" />
-                  </span>
-                )}
+              <li key={it.name.en}>
                 <div className="mi-text">
                   <div className="mi-line">
                     <h3>{it.name[lang]}</h3>

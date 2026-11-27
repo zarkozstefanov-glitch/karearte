@@ -28,11 +28,6 @@ export function MenuPage({ lang }: { lang: Lang }) {
   return (
     <section className="sec menu-page">
       <div className="container">
-        <header className="menu-head">
-          <p className="kicker">{T(lang, "КаРе-АртЕ", "KaRe-Arte")}</p>
-          <h1>{T(lang, "Меню", "Menu")}</h1>
-          <p className="menu-lead">{T(lang, "Кафе, лимонади, авторски коктейли, вино и нещо за хапване.", "Coffee, lemonades, signature cocktails, wine and something to nibble.")}</p>
-        </header>
         <MenuView lang={lang} />
       </div>
     </section>
@@ -46,7 +41,6 @@ export function EventsPage({ lang }: { lang: Lang }) {
   const list = upcoming();
   return (
     <>
-      <PageHero kicker={T(lang, "Събития", "Events")} title={T(lang, "Ела за кафе, остани за куиза.", "Come for coffee, stay for the quiz.")} lead={T(lang, "Местата са ограничени. Резервираш тук, плащаш на място — без онлайн плащане.", "Seats are limited. Book here, pay at the venue — no online payment.")} />
       <section className="sec sec-tight">
         <div className="container">
           <EventsList lang={lang} events={list} />
@@ -181,7 +175,6 @@ export function GalleryPage({ lang }: { lang: Lang }) {
   ];
   return (
     <>
-      <PageHero kicker={T(lang, "Галерия", "Gallery")} title={T(lang, "Изложбата е отворена.", "The exhibition is open.")} lead={T(lang, "Интериор, градина, напитки и вечери. Филтрирай по ден и нощ.", "Interior, garden, drinks and evenings. Filter by day and night.")} />
       <section className="sec sec-tight">
         <div className="container">
           <Gallery lang={lang} videos={videos} />
@@ -198,7 +191,6 @@ export function VlogPage({ lang }: { lang: Lang }) {
   const [first, ...rest] = list;
   return (
     <>
-      <PageHero kicker={T(lang, "Влог", "Vlog")} title={T(lang, "Отвътре.", "From the inside.")} lead={T(lang, "Кратки истории и видеа — какво се случва зад бара.", "Short stories and videos — what happens behind the bar.")} />
       <section className="sec sec-tight">
         <div className="container">
           <Link href={href(lang, `/vlog/${first.slug}/`)} className="post-feature" data-reveal="up">
@@ -314,7 +306,6 @@ export const findMeta = (l: Lang) => pageMeta(l, "/find-us/", T(l, "Как да 
 export function FindUsPage({ lang }: { lang: Lang }) {
   return (
     <>
-      <PageHero kicker={T(lang, "Как да ни намериш", "How to find us")} title={T(lang, "Отвън няма табела. Вътре има неон.", "No sign outside. Neon inside.")} lead={site.address[lang]} />
       <section className="sec sec-tight">
         <div className="container">
           <ol className="steps">

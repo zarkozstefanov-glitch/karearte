@@ -4773,3 +4773,11 @@ html { background-color: var(--bg); }
   .fp-mini-hint { padding: 6px 10px; font-size: 0.8rem; }
   .wz-actions { margin-top: 8px; }
 }
+/* menu: one long column of sections, no photos */
+.menu-sections { columns: 1 !important; display: flex !important; flex-direction: column; gap: 18px; max-width: 860px; margin-inline: auto; }
+.menu-sec { margin: 0 !important; }
+.menu-view .menu-cats { max-width: 860px; margin-inline: auto; }
+.mi-img { display: none !important; }
+/* pages without an intro: the first section starts right under the header */
+main > section.sec:first-child:not(.hero):not(.menu-page):not(.res-page) { padding-top: calc(var(--header-h) + 28px); }
+@media (max-width: 700px) { main > section.sec:first-child:not(.hero):not(.menu-page):not(.res-page) { padding-top: calc(96px + env(safe-area-inset-top)); } }
