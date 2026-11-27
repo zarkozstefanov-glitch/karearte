@@ -1,14 +1,37 @@
 export type Theme = "day" | "night";
 export const THEME_KEY = "ka-theme";
 
-/** Runs inline in <head> before paint: explicit choice, else day 07–18 Sofia time, else night. */
-export const themeInitScript = `(function(){try{var t=sessionStorage.getItem('${THEME_KEY}');if(t!=='day'&&t!=='night'){t='night';/* TODO restore Sofia time: var h=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hour12:false,timeZone:'Europe/Sofia'}).format(new Date());t=(h>=7&&h<18)?'day':'night'; */}document.documentElement.dataset.theme=t;var p=location.pathname,home=p==='/'||p==='/en'||p==='/en/';var m=document.querySelector('meta[name=theme-color]');if(m)m.content=home?(t==='day'?'#F5EACE':'#202338'):(t==='day'?'#FFF3D1':'#0E1430');}catch(e){document.documentElement.dataset.theme='night';}})();`;
+/** Day theme between these hours, Sofia time (Europe/Sofia, DST included); night otherwise. */
+export const DAY_FROM = 7;
+export const DAY_TO = 18;
 
-export function setTheme(t: Theme) {
-  document.documentElement.dataset.theme = t;
+/** Runs inline in <head> before paint: the visitor's own choice (this session), else day/night by the time in Sofia. */
+export const themeInitScript = `(function(){var d=document.documentElement,t;try{t=sessionStorage.getItem('${THEME_KEY}')}catch(e){}if(t!=='day'&&t!=='night'){try{var h=+new Intl.DateTimeFormat('en-GB',{hour:'numeric',hourCycle:'h23',timeZone:'Europe/Sofia'}).format(new Date());t=(h>=${DAY_FROM}&&h<${DAY_TO})?'day':'night'}catch(e){t='night'}}d.dataset.theme=t;try{var p=location.pathname,home=p==='/'||p==='/en'||p==='/en/';var m=document.querySelector('meta[name=theme-color]');if(m)m.content=home?(t==='day'?'#F5EACE':'#202338'):(t==='day'?'#FFF3D1':'#0E1430')}catch(e){}})();`;
+
+/** The theme the clock says right now in Sofia. */
+export function sofiaTheme(now = new Date()): Theme {
+  const h = Number(new Intl.DateTimeFormat("en-GB", { hour: "numeric", hourCycle: "h23", timeZone: "Europe/Sofia" }).format(now));
+  return h >= DAY_FROM && h < DAY_TO ? "day" : "night";
+}
+
+/** True when the visitor picked a theme with the toggle in this session (then the clock no longer decides). */
+export function hasOwnChoice(): boolean {
   try {
-    sessionStorage.setItem(THEME_KEY, t);
-  } catch {}
+    const t = sessionStorage.getItem(THEME_KEY);
+    return t === "day" || t === "night";
+  } catch {
+    return false;
+  }
+}
+
+/** remember=false for the automatic clock switch, so it doesn't count as the visitor's own choice. */
+export function setTheme(t: Theme, remember = true) {
+  document.documentElement.dataset.theme = t;
+  if (remember) {
+    try {
+      sessionStorage.setItem(THEME_KEY, t);
+    } catch {}
+  }
   syncBarColor();
   window.dispatchEvent(new CustomEvent("ka-theme", { detail: t }));
 }

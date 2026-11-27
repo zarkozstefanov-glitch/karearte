@@ -24,20 +24,20 @@ const easeInOut = (t: number) => -(Math.cos(Math.PI * t) - 1) / 2;
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 /** Switch colours instantly (no CSS transitions), so the revealed page is already in its final state. */
-function snap(next: Theme) {
+function snap(next: Theme, remember = true) {
   const html = document.documentElement;
   html.classList.add("theme-snap");
-  setTheme(next);
+  setTheme(next, remember);
   void getComputedStyle(html).color;
   requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove("theme-snap")));
 }
 
-function crossFade(next: Theme) {
+function crossFade(next: Theme, remember = true) {
   const d = document as Document & { startViewTransition?: (cb: () => void) => unknown };
-  if (!d.startViewTransition) return snap(next);
+  if (!d.startViewTransition) return snap(next, remember);
   const html = document.documentElement;
   html.classList.add("vt-theme");
-  d.startViewTransition(() => snap(next));
+  d.startViewTransition(() => snap(next, remember));
   setTimeout(() => html.classList.remove("vt-theme"), FADE_MS + 100);
 }
 
@@ -46,9 +46,9 @@ function crossFade(next: Theme) {
  * The band's position is derived from the body's own path (`sumAt` = x + y of its centre at a time),
  * so it always trails LAG px behind it, then finishes the sweep past the corner once the body has set.
  */
-function wipe(next: Theme, sky: HTMLElement, W: number, H: number, sumAt: (ms: number) => number, t0: number) {
+function wipe(next: Theme, sky: HTMLElement, W: number, H: number, sumAt: (ms: number) => number, t0: number, remember = true) {
   const d = document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } };
-  if (!d.startViewTransition) return snap(next);
+  if (!d.startViewTransition) return snap(next, remember);
   const html = document.documentElement;
   const endAt = SWITCH_AT + WIPE_MS;
   const goal = W + H + BAND;
@@ -66,7 +66,7 @@ function wipe(next: Theme, sky: HTMLElement, W: number, H: number, sumAt: (ms: n
   strip.style.opacity = "0";
   sky.prepend(strip);
   html.classList.add("vt-wipe");
-  const vt = d.startViewTransition(() => snap(next));
+  const vt = d.startViewTransition(() => snap(next, remember));
   vt.ready
     .then(() => {
       // start from wherever the body is now (the snapshot takes a frame or two)
@@ -86,7 +86,7 @@ function wipe(next: Theme, sky: HTMLElement, W: number, H: number, sumAt: (ms: n
       html.animate(clip, { duration: dur, easing: "linear", fill: "both", pseudoElement: "::view-transition-new(root)" });
       strip.animate(band, { duration: dur, easing: "linear", fill: "both" });
     })
-    .catch(() => snap(next));
+    .catch(() => snap(next, remember));
   setTimeout(() => html.classList.remove("vt-wipe"), endAt + 150);
 }
 
@@ -120,13 +120,13 @@ function arc(from: Pt, to: Pt, kind: "set" | "rise", warp: (t: number) => number
   return k;
 }
 
-export function swapTheme(next: Theme) {
+export function swapTheme(next: Theme, remember = true) {
   if (busy) return;
   const orb = document.querySelector<HTMLElement>(".header-logo .logo-orb");
   const desktop = window.matchMedia("(min-width: 900px) and (hover: hover) and (pointer: fine)").matches;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduce) return setTheme(next);
-  if (!orb || !desktop) return crossFade(next);
+  if (reduce) return setTheme(next, remember);
+  if (!orb || !desktop) return crossFade(next, remember);
   busy = true;
 
   const r = orb.getBoundingClientRect();
@@ -178,7 +178,7 @@ export function swapTheme(next: Theme) {
     const t = easeInOut(Math.min(1, Math.max(0, ms / SET_MS)));
     return home.x + (corner.x - home.x) * t + home.y + (corner.y - home.y) * t * t + size;
   };
-  setTimeout(() => wipe(next, sky, W, H, sumAt, t0), SWITCH_AT);
+  setTimeout(() => wipe(next, sky, W, H, sumAt, t0, remember), SWITCH_AT);
 
   setTimeout(() => {
     orb.classList.remove("is-away");

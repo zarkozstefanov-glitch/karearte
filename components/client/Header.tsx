@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { nav, to, ui, href, type Lang } from "@/lib/i18n";
-import { syncBarColor } from "@/lib/theme";
+import { syncBarColor, sofiaTheme, hasOwnChoice, currentTheme } from "@/lib/theme";
+import { swapTheme } from "./themeSwap";
 import { LogoOrb } from "../Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { site } from "@/content/site";
@@ -33,6 +34,21 @@ export function Header({ lang }: { lang: Lang }) {
     return () => window.removeEventListener("scroll", on);
   }, [path]);
   useEffect(() => setOpen(false), [path]);
+  // day/night follows the clock in Sofia (07:00–18:00 = day) unless the visitor picked a theme themselves
+  useEffect(() => {
+    const check = () => {
+      if (document.hidden || hasOwnChoice()) return;
+      const t = sofiaTheme();
+      if (t !== currentTheme()) swapTheme(t, false);
+    };
+    check();
+    const id = window.setInterval(check, 60_000);
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      window.clearInterval(id);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, []);
   useEffect(() => {
     document.documentElement.classList.toggle("hdr-away", away && !open);
   }, [away, open]);
